@@ -11,7 +11,7 @@ REST method._ PUT, POST, and DELETE will be implemented at a later date.**
 
 1. Clone the repository using the following command:
 	```
-	git clone ...
+	git clone https://github.com/blastomussa/crayon-python-sdk.git
 	```
 
 2. Navigate to the root directory of the project and run:
