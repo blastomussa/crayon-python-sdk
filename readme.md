@@ -23,7 +23,7 @@ REST method._ PUT, POST, and DELETE will be implemented at a later date.**
 
 4. Import the CloudIQ class from cloudiq.py using the following command:
 	```
-	from cloudiqSDK import CloudIQ
+	from cloudiq import CloudIQ
 	```
 
 5. Initialize an instance of the CloudIQ class with valid user credentials:
@@ -80,6 +80,6 @@ python3 example-products.py
 ###  How to retrieve detailed docstring information on CloudIQ class
 
 ```
-from cloudiqSDK import CloudIQ
+from cloudiq import CloudIQ
 help(cloudIQ)
 ```
