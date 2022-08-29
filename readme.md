@@ -21,7 +21,7 @@ REST method._ PUT, POST, and DELETE will be implemented at a later date.**
 
 3. Copy cloudiq.py to the root directory of a new project.
 
-4. Import the CloudIQ class from cloudiq.py using the following command:
+4. Import the CloudIQ class from cloudiq.py:
 	```
 	from cloudiq import CloudIQ
 	```
