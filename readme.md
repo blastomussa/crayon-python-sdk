@@ -1,8 +1,8 @@
 # Crayon CloudIQ SDK for Python
 
 This project is an SDK for Crayon's CloudIQ API that can be used in Python
-scripts and applications. Provides a simple interface to test Cloud IQ API calls
-with python for individuals who are inexperienced in C#.
+scripts and applications. Provides a simple interface for individuals who are
+inexperienced in C# to test Cloud IQ API calls with Python.
 
 **As of right now, this is a non-destructive test suite that _only provides the GET
 REST method._ PUT, POST, and DELETE will be implemented at a later date.**
