@@ -19,7 +19,7 @@ REST method._ PUT, POST, and DELETE will be implemented at a later date.**
 	pip install -r requirements.txt
 	```
 
-3. Copy cloudiq.py to the root directory of an existing project.
+3. Copy cloudiq.py to the root directory of a new project.
 
 4. Import the CloudIQ class from cloudiq.py using the following command:
 	```
