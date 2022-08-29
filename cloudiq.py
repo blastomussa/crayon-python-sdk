@@ -55,17 +55,17 @@ class CloudIQ():
         }
         try:
             response = requests.post(tokenURL, auth=basic, headers=header, data=params)
-            if(response.status_code == 200):
+            if(int(response.status_code) == 200):
                 self.tokenData = response.json()
                 ttl = int(time())+ int(self.tokenData['ExpiresIn']) # Default TTL = 3600 seconds
                 expiration_time = {'UnixExpiration': ttl}
                 self.tokenData.update(expiration_time) # Add expiration time to tokenData
                 return self.tokenData
-            elif(response.status_code == 400):
+            elif(int(response.status_code) == 400):
                 print("400 Bad Request. Please check the API credentials you provided.")
                 exit(1)
             else:
-                print(response.status_code + " Error.")
+                print(str(response.status_code) + " Error.")
                 exit(1)
         except requests.exceptions.ConnectionError:
             print("Connection Error. Please check your connection to the internet.")
@@ -109,10 +109,10 @@ class CloudIQ():
         url = self.baseURL + path
         try:
             response = requests.get(url, headers=header, params=params)
-            if(response.status_code == 200):
+            if(int(response.status_code) == 200):
                 return response.json()
             else:
-                print(response.status_code + " Error")
+                print(str(response.status_code) + " Error")
                 exit(1)
 
         except requests.exceptions.ConnectionError:
@@ -138,32 +138,119 @@ class CloudIQ():
         pass
 
     #----------------------------- API METHODS ---------------------------------
+    def ping(self):
+        """
+        Unauthenticated ping to determine if a connection to the API can be established.
+
+        Returns:
+            json (dictionary): Version and Environment Information
+        """
+        try:
+            url = self.baseURL + "ping"
+            header = {'accept': '*/*'}
+            response = requests.get(url, headers=header)
+            if(int(response.status_code) == 200):
+                return response.json()
+            else:
+                print(str(response.status_code) + " Error")
+                exit(1)
+
+        except requests.exceptions.ConnectionError:
+            print("Connection Error. Please check your connection to the internet.")
+            exit(1)
+
+
+    def me(self):
+        """
+        Get information about the currently authenticated user
+
+        Returns:
+            json (dictionary): Me Resource including username, userID, token and claims
+        """
+        path = 'Me'
+        json = self.get(path)
+        return json
+
+
+                              ####Organizations####
     def getOrganizations(self, filter=None):
         """
         Get a list of all organizations associated with account.
         https://apidocs.crayon.com/scenarios/organizations-get.html
 
+        Args:
+            filter (dictionary): optional
+
         Returns:
-            json (dictionary): JSON response to GET request
+            json (dictionary): OrganizationCollection Resource
+                https://apidocs.crayon.com/resources/OrganizationCollection.html
         """
         path = 'Organizations'
         json = self.get(path, filter)
         return json
 
 
+    def getOrganization(self, orgID):
+        """
+        Get an organization by OrgID
+        https://apidocs.crayon.com/scenarios/organization-get.html
+
+        Args:
+            orgID (integer): organization ID; REQUIRED PARAMETER *
+
+        Returns:
+            json (dictionary): Organization Resource
+                https://apidocs.crayon.com/resources/Organization.html
+        """
+        path = 'Organizations/' + str(orgID)
+        json = self.get(path)
+        return json
+
+
+    def getOrganizationSalesContact(self, orgID):
+        """
+        Get the Sales Contact for an organization
+
+        Args:
+            orgID (integer): organization ID; REQUIRED PARAMETER *
+
+        Returns:
+            json (dictionary): OrganizationSalesContact Resource
+        """
+        path = 'Organizations/' + str(orgID) + "/salescontact"
+        json = self.get(path)
+        return json
+
+
+    def organizationHasAccess(self, orgID):
+        """
+        Test if current API credentials have access to an organization
+
+        Args:
+            orgID (integer): organization ID; REQUIRED PARAMETER *
+
+        Returns:
+            access (boolean): True or False
+        """
+        path = "Organizations/HasAccess/" + str(orgID)
+        access = self.get(path)
+        return access
+
+
     def getAgreementProducts(self, orgID, filter=None):
         """
+        Gets a list products connected to agreement.
         https://apidocs.crayon.com/scenarios/agreementproducts-get.html
 
         Args:
             orgID (integer): organization ID; REQUIRED PARAMETER *
-            filter (dictionary): filter results
+            filter (dictionary): optional filter results
                 https://apidocs.crayon.com/resources/AgreementProductFilter.html
                 * Filtering capabilities and parameters are better documented
                   in Swagger UI
 
         Returns:
-            json (dictionary): JSON response to GET request
+            json (dictionary): AgreementProductCollection Resource
         """
         path = 'AgreementProducts'
         params = {'OrganizationId': orgID}

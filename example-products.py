@@ -22,7 +22,7 @@ crayon_api = CloudIQ(ID,SECRET,USER,PASS)
 
 # product filter
 # https://apidocs.crayon.com/resources/AgreementProductFilter.html
-productFamilyName = 'Office 365'
+productFamilyName = 'Azure Active Directory'
 filter = {
     'Include.ProductFamilyNames': productFamilyName
 }

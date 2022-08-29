@@ -72,10 +72,13 @@ python3 example-products.py
 ## Methods currently implemented in CloudIQ class
 
 1. get()
-2. getToken()
-3. validateToken()
-4. getOrganizations()
-5. getAgreementProducts()
+2. ping((
+3. me()
+4. getToken()
+5. validateToken()
+6. getOrganizations()
+7. getOrganization()
+8. getAgreementProducts()
 
 ###  How to retrieve detailed docstring information on CloudIQ class
 
