@@ -78,7 +78,14 @@ python3 example-products.py
 5. validateToken()
 6. getOrganizations()
 7. getOrganization()
-8. getAgreementProducts()
+8. getOrganizationSalesContact()
+9. getAgreementProducts()
+10. getActivityLogs()
+11. organizationHasAccess()
+12. getAddresses()
+13. getAddress()
+14. getSupportedBillingCycles()
+
 
 ###  How to retrieve detailed docstring information on CloudIQ class
 

@@ -14,7 +14,6 @@ class CloudIQ():
         baseURL (string): Base URL of CloudIQ API https://api.crayon.com/api/v1
         tokenData (dictionary/json): Token used to authenticate REST methods
     """
-
     def __init__(self, client_id, client_secret, username, password):
         """
         Initiates class with credentials necessary for Resource Password Flow Auth
@@ -32,6 +31,7 @@ class CloudIQ():
         self.password = password
         self.baseURL = 'https://api.crayon.com/api/v1/'
         self.tokenData = None
+
 
     #------------------------ Authorization and Authentication -----------------
     def getToken(self):
@@ -63,9 +63,11 @@ class CloudIQ():
                 return self.tokenData
             elif(int(response.status_code) == 400):
                 print("400 Bad Request. Please check the API credentials you provided.")
+                print(response.json())
                 exit(1)
             else:
                 print(str(response.status_code) + " Error.")
+                print(response.json())
                 exit(1)
         except requests.exceptions.ConnectionError:
             print("Connection Error. Please check your connection to the internet.")
@@ -113,6 +115,10 @@ class CloudIQ():
                 return response.json()
             else:
                 print(str(response.status_code) + " Error")
+                try:
+                    print(response.json())
+                except requests.exceptions.JSONDecodeError:
+                    print(response)
                 exit(1)
 
         except requests.exceptions.ConnectionError:
@@ -137,6 +143,7 @@ class CloudIQ():
     def _delete(self, path):
         pass
 
+
     #----------------------------- API METHODS ---------------------------------
     def ping(self):
         """
@@ -153,6 +160,7 @@ class CloudIQ():
                 return response.json()
             else:
                 print(str(response.status_code) + " Error")
+                print(response.json())
                 exit(1)
 
         except requests.exceptions.ConnectionError:
@@ -170,6 +178,101 @@ class CloudIQ():
         path = 'Me'
         json = self.get(path)
         return json
+
+
+                              ####Activity Logs####
+    # 'ErrorCode': '500 InternalServerError', 'Message': "Ops. Something broke'
+    def getActivityLogs(self, entityID, filter=None):
+        """
+        Get Activity Logs for organization
+
+        Args:
+            entityID (integer): organization ID REQUIRED
+            filter (dictionary): optional
+
+        Returns:
+            json (dictionary): Activity Log Item Resource
+        """
+        path = 'ActivityLogs'
+        params = {"Id": entityID}
+        if(filter): params.update(filter)
+        json = self.get(path, params=params)
+        return json
+
+
+                              ####Addresses####
+    # 'ErrorCode': '500 InternalServerError', 'Message': "Ops. Something broke'
+    def getAddresses(self, orgID, filter=None):
+        """
+        Get Addresses associated with an Organization
+
+        Args:
+            orgID (integer): Organization ID; REQUIRED
+            filter (dictionary): optional
+
+        Returns:
+            json (dictionary): Address Resources
+        """
+        path = 'organizations/' + str(orgID) + '/Addresses'
+        json = self.get(path, params=filter)
+        return json
+
+    # 'ErrorCode': '500 InternalServerError', 'Message': "Ops. Something broke'
+    def getAddress(self, orgID, addressID, filter=None):
+        """
+        Get Address associated with an Organization
+
+        Args:
+            orgID (integer): Organization ID ; REQUIRED
+            addressID: Address ID (from getAddresses); REQUIRED
+            filter (dictionary): optional
+
+        Returns:
+            json (dictionary):
+        """
+        path = 'organizations/' + str(orgID) + '/Addresses/' + str(addressID)
+        json = self.get(path, params=filter)
+        return json
+
+
+                              ####AgreementProducts####
+    def getAgreementProducts(self, orgID, filter=None):
+        """
+        Gets a list of products available to an organization.
+        https://apidocs.crayon.com/scenarios/agreementproducts-get.html
+
+        Args:
+            orgID (integer): organization ID; REQUIRED PARAMETER *
+            filter (dictionary): optional filter results
+                https://apidocs.crayon.com/resources/AgreementProductFilter.html
+                * Filtering capabilities and parameters are better documented
+                  in Swagger UI
+
+        Returns:
+            json (dictionary): AgreementProductCollection Resource
+        """
+        path = 'AgreementProducts'
+        params = {'OrganizationId': orgID}
+        if(filter): params.update(filter)
+        json = self.get(path, params)
+        return json
+
+    # 'ErrorCode': '500 InternalServerError', 'Message': "Ops. Something broke'
+    def getSupportedBillingCycles(self, partNumber, filter=None):
+        """
+        Gets the supported billing cycles of a product
+
+        Args:
+            partNumber (string): Part Number of Product; REQUIRED PARAMETER *
+            filter (dictionary): optional filter results
+
+        Returns:
+            json (dictionary): BillingCycleEnum Resource
+        """
+        path = 'AgreementProducts/'+ str(partNumber)+ '/supportedbillingcycles'
+        json = self.get(path, params=filter)
+        return json
+
 
 
                               ####Organizations####
@@ -235,25 +338,3 @@ class CloudIQ():
         path = "Organizations/HasAccess/" + str(orgID)
         access = self.get(path)
         return access
-
-
-    def getAgreementProducts(self, orgID, filter=None):
-        """
-        Gets a list products connected to agreement.
-        https://apidocs.crayon.com/scenarios/agreementproducts-get.html
-
-        Args:
-            orgID (integer): organization ID; REQUIRED PARAMETER *
-            filter (dictionary): optional filter results
-                https://apidocs.crayon.com/resources/AgreementProductFilter.html
-                * Filtering capabilities and parameters are better documented
-                  in Swagger UI
-
-        Returns:
-            json (dictionary): AgreementProductCollection Resource
-        """
-        path = 'AgreementProducts'
-        params = {'OrganizationId': orgID}
-        params.update(filter)
-        json = self.get(path, params)
-        return json
