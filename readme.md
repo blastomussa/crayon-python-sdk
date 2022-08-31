@@ -72,7 +72,7 @@ python3 example-products.py
 ## Methods currently implemented in CloudIQ class
 
 1. get()
-2. ping((
+2. ping()
 3. me()
 4. getToken()
 5. validateToken()
