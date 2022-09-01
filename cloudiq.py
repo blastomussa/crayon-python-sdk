@@ -217,6 +217,7 @@ class CloudIQ():
         json = self.get(path, params=filter)
         return json
 
+
     # 'ErrorCode': '500 InternalServerError', 'Message': "Ops. Something broke'
     def getAddress(self, orgID, addressID, filter=None):
         """
@@ -256,6 +257,7 @@ class CloudIQ():
         if(filter): params.update(filter)
         json = self.get(path, params)
         return json
+
 
     # 'ErrorCode': '500 InternalServerError', 'Message': "Ops. Something broke'
     def getSupportedBillingCycles(self, partNumber, filter=None):
