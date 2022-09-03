@@ -85,6 +85,7 @@ python3 example-products.py
 12. getAddresses()
 13. getAddress()
 14. getSupportedBillingCycles()
+15. getAgreements()
 
 
 ###  How to retrieve detailed docstring information on CloudIQ class
