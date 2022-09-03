@@ -63,11 +63,17 @@ class CloudIQ():
                 return self.tokenData
             elif(int(response.status_code) == 400):
                 print("400 Bad Request. Please check the API credentials you provided.")
-                print(response.json())
+                try:
+                    print(response.json())
+                except requests.exceptions.JSONDecodeError:
+                    print(response)
                 exit(1)
             else:
                 print(str(response.status_code) + " Error.")
-                print(response.json())
+                try:
+                    print(response.json())
+                except requests.exceptions.JSONDecodeError:
+                    print(response)
                 exit(1)
         except requests.exceptions.ConnectionError:
             print("Connection Error. Please check your connection to the internet.")
@@ -274,6 +280,23 @@ class CloudIQ():
         path = 'AgreementProducts/'+ str(partNumber)+ '/supportedbillingcycles'
         json = self.get(path, params=filter)
         return json
+
+
+                              ####Agreements####
+    def getAgreements(self, filter=None):
+        """
+        Get an Agreements
+
+        Args:
+            filter (dictionary): optional filter
+
+        Returns:
+            json (dictionary): Agreement Resource
+        """
+        path = 'Agreements'
+        json = self.get(path, filter)
+        return json
+
 
 
 

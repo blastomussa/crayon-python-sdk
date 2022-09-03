@@ -22,7 +22,7 @@ crayon_api = CloudIQ(ID,SECRET,USER,PASS)
 
 # product filter
 # https://apidocs.crayon.com/resources/AgreementProductFilter.html
-productFamilyName = 'Intune'
+productFamilyName = 'Office 365'
 filter = {
     'Include.ProductFamilyNames': productFamilyName
 }
@@ -34,9 +34,6 @@ for r in response['Items']:
     name = r['ProductVariant']['Product']['ItemLegalName']
     partNumber = r['ProductVariant']['Product']['PartNumber']
     print(name + ": " + partNumber)
-
-for r in response['Items']:
-    print(r['ProductVariant']['Product'])
 
 '''
 # list product families
