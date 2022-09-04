@@ -112,6 +112,17 @@ python3 example-products.py
 38. getGrouping()
 39. getInvoiceProfiles()
 40. getInvoiceProfile()
+41. getProductContainers()
+42. getProductContainer()
+43. getProductContainerRowIssues()
+44. getProductContainerShoppingCart()
+45. getPrograms()
+46. getProgram()
+47. getPublishers()
+48. getPublisher()
+49. getRegions()
+50. getRegionByCode()
+
 
 
 ##  How to retrieve detailed Docstring information on CloudIQ class

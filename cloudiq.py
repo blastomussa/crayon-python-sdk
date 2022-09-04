@@ -210,7 +210,7 @@ class CloudIQ():
         path = self.baseURL + 'ActivityLogs'
         params = {"Id": entityID}
         if(filter): params.update(filter)
-        json = self.get(path, params=params)
+        json = self.get(path, params)
         return json
 
 
@@ -228,7 +228,7 @@ class CloudIQ():
             json (dictionary): Address Resources
         """
         path = self.baseURL + 'organizations/' + str(orgID) + '/Addresses'
-        json = self.get(path, params=filter)
+        json = self.get(path, filter)
         return json
 
 
@@ -246,7 +246,7 @@ class CloudIQ():
             json (dictionary):
         """
         path = self.baseURL + 'organizations/' + str(orgID) + '/Addresses/' + str(addressID)
-        json = self.get(path, params=filter)
+        json = self.get(path, filter)
         return json
 
 
@@ -865,3 +865,161 @@ class CloudIQ():
         path = self.baseURL + "Organizations/HasAccess/" + str(orgID)
         access = self.get(path)
         return access
+
+
+                            ####ProductContainers####
+    def getProductContainers(self, orgID, filter=None):
+        """
+        Get a list of product containers
+
+        Args:
+            orgID (integer): REQUIRED
+            filter (dictionary): optional
+
+        Returns:
+            json (dictionary): List of ProductContainer Resources
+        """
+        path = self.baseURL + 'ProductContainers'
+        params = {'OrganizationId': orgID}
+        if(filter): params.update(filter)
+        json = self.get(path, params)
+        return json
+
+
+    def getProductContainer(self, productContainerID):
+        """
+        Get a product containers
+
+        Args:
+            productContainerID (integer): REQUIRED
+
+        Returns:
+            json (dictionary): ProductContainer Resource
+        """
+        path = self.baseURL + "ProductContainers/" + str(productContainerID)
+        response = self.get(path)
+        return response
+
+
+    def getProductContainerRowIssues(self, productContainerID):
+        """
+        Get a product container row issues
+
+        Args:
+            productContainerID (integer): REQUIRED
+
+        Returns:
+            json (dictionary): ProductContainer Resource
+        """
+        path = self.baseURL + "ProductContainers/rowissues/" + str(productContainerID)
+        response = self.get(path)
+        return response
+
+
+    def getProductContainerShoppingCart(self, orgID):
+        """
+        Get a product container shopping cart
+
+        Args:
+            orgID (integer): REQUIRED
+
+        Returns:
+            json (dictionary): ProductContainer Resource
+        """
+        path = self.baseURL + "ProductContainers/getorcreateshoppingcart"
+        params = {'OrganizationId': orgID}
+        response = self.get(path, params)
+        return response
+
+
+                            ####Programs####
+    def getPrograms(self, filter=None):
+        """
+        Get a list of programs
+
+        Args:
+            filter (dictionary): optional
+
+        Returns:
+            json (dictionary): List of Program Resources
+        """
+        path = self.baseURL + 'Programs'
+        json = self.get(path, filter)
+        return json
+
+
+    def getProgram(self, programID):
+        """
+        Get a program
+
+        Args:
+            programID (integer): REQUIRED
+
+        Returns:
+            json (dictionary): Program Resource
+        """
+        path = self.baseURL + "Programs/" + str(programID)
+        response = self.get(path)
+        return response
+
+
+                            ####Publishers####
+    def getPublishers(self, filter=None):
+        """
+        Get a list of publishers
+
+        Args:
+            filter (dictionary): optional
+
+        Returns:
+            json (dictionary): List of publisher Resources
+        """
+        path = self.baseURL + 'publishers'
+        json = self.get(path, filter)
+        return json
+
+
+    def getPublisher(self, publisherID):
+        """
+        Get a publisher
+
+        Args:
+            publisherID (integer): REQUIRED
+
+        Returns:
+            json (dictionary): publisher Resource
+        """
+        path = self.baseURL + "publishers/" + str(publisherID)
+        response = self.get(path)
+        return response
+
+                            ####Regions####
+    def getRegions(self, filter=None):
+        """
+        Get a list of Regions
+
+        Args:
+            filter (dictionary): optional
+
+        Returns:
+            json (dictionary): List of Region Resources
+        """
+        path = self.baseURL + 'Regions'
+        json = self.get(path, filter)
+        return json
+
+
+    def getRegionByCode(self, regionCode):
+        """
+        Get a Region
+
+        Args:
+            regionCode (integer): REQUIRED
+
+        Returns:
+            json (dictionary): Region Resource
+        """
+        path = self.baseURL + "Regions/bycode"
+        params = {'regionCode': regionCode}
+        response = self.get(path, params)
+        return response
