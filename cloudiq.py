@@ -132,13 +132,15 @@ class CloudIQ():
 
 
     # DO NOT IMPLEMENT YET
-    # TODO: find resource that can be created and deleted easily
+    # TODO: find resource that can be created and deleted easily;
+    # TEST WITH: /api/v1/Clients
     def _post(self, path, data):
         pass
 
 
     # DO NOT IMPLEMENT YET
     # TODO: find resource that can be updated easily and non-destructively
+    # TEST WITH: /api/v1/Clients/{clientID}
     def _put(self, path, data):
         pass
 
@@ -151,6 +153,7 @@ class CloudIQ():
 
     # DO NOT IMPLEMENT YET
     # TODO: find resource that can be created and deleted easily; least destructive
+    # TEST WITH: /api/v1/Clients/{clientID}
     def _delete(self, path):
         pass
 
@@ -350,7 +353,7 @@ class CloudIQ():
         return json
 
 
-    def getBillingCyclesCspNameDictionary(self):
+    def getBillingCyclesNameDictionary(self):
         """
         Get Billing Cycle CSP Name Dictionary
 
@@ -431,10 +434,10 @@ class CloudIQ():
 
     def getBillingStatementJSON(self, statementID):
         """
-        Get Get billing statement reconciliation file
+        Get billing statement JSON file
 
         Args:
-            fileID (integer): REQUIRED
+            statementID (integer): REQUIRED
 
         Returns:
             json (dictionary): byte array of JSON file
@@ -444,7 +447,165 @@ class CloudIQ():
         return json
 
 
-                              ####CustomerTenants####
+                            ####Blog Items####
+    def getBlogItems(self, filter=None):
+        """
+        Get Blog Items
+
+        Args:
+            orgID (integer): REQUIRED
+
+        Returns:
+            json (dictionary): BlogItem Resource
+        """
+        path = self.baseURL + 'BlogItems'
+        json = self.get(path, filter)
+        return json
+
+
+                            ####Clients####
+    def getClients(self, filter=None):
+        """
+        Get list of API Clients
+
+        Args:
+            filter (dictionary): optional
+
+        Returns:
+            json (dictionary): list of Client Resources
+        """
+        path = self.baseURL + 'Clients'
+        json = self.get(path, filter)
+        return json
+
+
+    def getClient(self, clientID):
+        """
+        Get API Client
+
+        Args:
+            clientID (string): REQUIRED
+
+        Returns:
+            json (dictionary): Client Resource
+        """
+        path = self.baseURL + 'Clients/' + str(clientID)
+        json = self.get(path)
+        return json
+
+
+    def _createClient(self):
+        pass
+
+
+    def _updateClient(self):
+        pass
+
+
+    def _deleteClient(self):
+        pass
+
+
+                            ####Consumers####
+    def getConsumers(self, orgID, filter=None):
+        """
+        Get list of Consumers
+
+        Args:
+            orgID: REQUIRED
+            filter (dictionary): optional
+
+        Returns:
+            json (dictionary): list of Consumer Resources
+        """
+        path = self.baseURL + 'Consumers'
+        params = {'OrganizationId': orgID}
+        if(filter): params.update(filter)
+        json = self.get(path, params)
+        return json
+
+
+    def getConsumer(self, consumerID):
+        """
+        Get Consumer
+
+        Args:
+            consumerID (integer): REQUIRED
+
+        Returns:
+            json (dictionary): Consumer Resource
+        """
+        path = self.baseURL + 'Consumers/' + str(consumerID)
+        json = self.get(path)
+        return json
+
+
+    def _createConsumer(self):
+        pass
+
+
+    def _updateConsumer(self):
+        pass
+
+
+    def _deleteConsumer(self):
+        pass
+
+
+                            ####CrayonAccounts####
+    def getCrayonAccounts(self, orgID, filter=None):
+        """
+        Get list of Crayon Accounts
+
+        Args:
+            orgID (integer): REQUIRED
+            filter (dictionary): optional
+
+        Returns:
+            json (dictionary): list of CrayonAccount Resources
+        """
+        path = self.baseURL + 'CrayonAccounts'
+        params = {'OrganizationId': orgID}
+        if(filter): params.update(filter)
+        json = self.get(path, params)
+        return json
+
+
+    def getCrayonAccount(self, accountID):
+        """
+        Get Crayon Account
+
+        Args:
+            accountID (integer): REQUIRED
+
+        Returns:
+            json (dictionary): CrayonAccount Resource
+        """
+        path = self.baseURL + 'Consumers/' + str(accountID)
+        json = self.get(path)
+        return json
+
+
+                        ####CustomerTenantsAgreements####
+    def getCustomerTenantAgreements(self, tenantID, AgreementTypeConsent):
+        """
+        Get a customer tenant agreement
+
+        Args:
+            tenantID (integer): REQUIRED
+            AgreementTypeConsent (integer): 0 or 1; REQUIRED
+
+        Returns:
+            json (dictionary): ServiceAccountAgreement Resource
+        """
+        path = self.baseURL + 'CustomerTenants/' + str(tenantID) + '/Agreements'
+        params = {'AgreementTypeConsent': AgreementTypeConsent}
+        json = self.get(path, params)
+        return json
+
+
+
+                            ####CustomerTenants####
     def getCustomerTenants(self, orgID, filter=None):
         """
         Get a list of Customer Tenants
@@ -507,23 +668,6 @@ class CloudIQ():
         json = self.get(path)
         return json
 
-
-                        ####CustomerTenantsAgreements####
-    def getCustomerTenantAgreements(self, tenantID, AgreementTypeConsent):
-        """
-        Get a customer tenant agreement
-
-        Args:
-            tenantID (integer): REQUIRED
-            AgreementTypeConsent (integer): 0 or 1; REQUIRED
-
-        Returns:
-            json (dictionary): ServiceAccountAgreement Resource
-        """
-        path = self.baseURL + 'CustomerTenants/' + str(tenantID) + '/Agreements'
-        params = {'AgreementTypeConsent': AgreementTypeConsent}
-        json = self.get(path, params)
-        return json
 
 
                               ####Organizations####

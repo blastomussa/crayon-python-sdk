@@ -5,7 +5,7 @@ scripts and applications. Provides a simple interface for individuals who are
 inexperienced in C# to test Cloud IQ API calls with Python.
 
 **As of right now, this is a non-destructive test suite that _only provides the GET
-REST method._ PUT, POST, and DELETE will be implemented at a later date.**
+REST method._ PUT, POST, PATCH, and DELETE will be implemented later.**
 
 ## Installation
 
@@ -95,12 +95,19 @@ python3 example-products.py
 21. getCustomerTenantAgreements()
 22. getBillingCycles()
 23. getProductVariantBillingCycles()
-24. getBillingCyclesCspNameDictionary()
+24. getBillingCyclesNameDictionary()
 25. getBillingStatements()
 26. getGroupedBillingStatements()
 27. getBillingStatementExcel()
 28. getBillingStatementCSV()
 29. getBillingStatementJSON()
+30. getBlogItems()
+31. getClients()
+32. getClient()
+33. getConsumers()
+34. getConsumer()
+35. getCrayonAccounts()
+36. getCrayonAccount()
 
 
 ##  How to retrieve detailed Docstring information on CloudIQ class
