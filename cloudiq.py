@@ -96,7 +96,7 @@ class CloudIQ():
 
 
     #----------------------------- REST METHODS --------------------------------
-    def get(self, path, params=None):
+    def get(self, url, params=None):
         """
         Retrieves valid token, assembles Authorization Header and makes a GET
         requests to a specified endpoint.
@@ -114,7 +114,6 @@ class CloudIQ():
             'Accept': 'application/json',
             'Content-Type': 'application/json'
             }
-        url = self.baseURL + path
         try:
             response = requests.get(url, headers=header, params=params)
             if(int(response.status_code) == 200):
@@ -181,7 +180,7 @@ class CloudIQ():
         Returns:
             json (dictionary): Me Resource including username, userID, token and claims
         """
-        path = 'Me'
+        path = self.baseURL + 'Me'
         json = self.get(path)
         return json
 
@@ -199,7 +198,7 @@ class CloudIQ():
         Returns:
             json (dictionary): Activity Log Item Resource
         """
-        path = 'ActivityLogs'
+        path = self.baseURL + 'ActivityLogs'
         params = {"Id": entityID}
         if(filter): params.update(filter)
         json = self.get(path, params=params)
@@ -219,7 +218,7 @@ class CloudIQ():
         Returns:
             json (dictionary): Address Resources
         """
-        path = 'organizations/' + str(orgID) + '/Addresses'
+        path = self.baseURL + 'organizations/' + str(orgID) + '/Addresses'
         json = self.get(path, params=filter)
         return json
 
@@ -237,7 +236,7 @@ class CloudIQ():
         Returns:
             json (dictionary):
         """
-        path = 'organizations/' + str(orgID) + '/Addresses/' + str(addressID)
+        path = self.baseURL + 'organizations/' + str(orgID) + '/Addresses/' + str(addressID)
         json = self.get(path, params=filter)
         return json
 
@@ -258,7 +257,7 @@ class CloudIQ():
         Returns:
             json (dictionary): AgreementProductCollection Resource
         """
-        path = 'AgreementProducts'
+        path = self.baseURL + 'AgreementProducts'
         params = {'OrganizationId': orgID}
         if(filter): params.update(filter)
         json = self.get(path, params)
@@ -277,7 +276,7 @@ class CloudIQ():
         Returns:
             json (dictionary): BillingCycleEnum Resource
         """
-        path = 'AgreementProducts/'+ str(partNumber)+ '/supportedbillingcycles'
+        path = self.baseURL + 'AgreementProducts/'+ str(partNumber)+ '/supportedbillingcycles'
         json = self.get(path, params=filter)
         return json
 
@@ -285,7 +284,7 @@ class CloudIQ():
                               ####Agreements####
     def getAgreements(self, filter=None):
         """
-        Get an Agreements
+        Get Agreements
 
         Args:
             filter (dictionary): optional filter
@@ -293,11 +292,106 @@ class CloudIQ():
         Returns:
             json (dictionary): Agreement Resource
         """
-        path = 'Agreements'
+        path = self.baseURL + 'Agreements'
         json = self.get(path, filter)
         return json
 
 
+    def getAgreementReports(self, productContainerId):
+        """
+        Get Agreement Reports
+
+        Args:
+            productContainerId (integer): REQUIRED
+
+        Returns:
+            json (dictionary): Agreement Report Resource
+        """
+        path = self.baseURL + 'AgreementReports/' + str(productContainerId)
+        json = self.get(path)
+        return json
+
+
+                              ####CustomerTenants####
+    def getCustomerTenants(self, orgID, filter=None):
+        """
+        Get a list of Customer Tenants
+
+        Args:
+            orgID (integer): REQUIRED
+            filter (dictionary): optional
+
+        Returns:
+            json (dictionary): List of CustomerTenant Resources
+        """
+        path = self.baseURL + 'CustomerTenants'
+        params = {'OrganizationId': orgID}
+        if(filter): params.update(filter)
+        json = self.get(path, params)
+        return json
+
+
+    def getCustomerTenant(self, tenantID):
+        """
+        Get a single customer tenant
+
+        Args:
+            tenantID (integer): REQUIRED
+
+        Returns:
+            json (dictionary): CustomerTenant Resource
+        """
+        path = self.baseURL + 'CustomerTenants/' + str(tenantID)
+        json = self.get(path)
+        return json
+
+
+    def getDetailedCustomerTenant(self, tenantID):
+        """
+        Get detailed information on a customer tenant
+
+        Args:
+            tenantID (integer): REQUIRED
+
+        Returns:
+            json (dictionary): CustomerTenantDetailed Resource
+        """
+        path = self.baseURL + 'CustomerTenants/' + str(tenantID) + '/detailed'
+        json = self.get(path)
+        return json
+
+
+    def getCustomerTenantAzurePlan(self, tenantID):
+        """
+        Get the Azure plan associated with a customer tenant
+
+        Args:
+            tenantID (integer): REQUIRED
+
+        Returns:
+            json (dictionary): AzurePlan Resource
+        """
+        path = self.baseURL + 'CustomerTenants/' + str(tenantID) + '/AzurePlan'
+        json = self.get(path)
+        return json
+
+
+                        ####CustomerTenantsAgreements####
+    def getCustomerTenantAgreements(self, tenantID, AgreementTypeConsent):
+        """
+        Get a customer tenant agreement
+
+        Args:
+            tenantID (integer): REQUIRED
+            AgreementTypeConsent (integer): 0 or 1 REQUIRED
+
+        Returns:
+            json (dictionary): ServiceAccountAgreement Resource
+        """
+        path = self.baseURL + 'CustomerTenants/' + str(tenantID) + '/Agreements'
+        params = {'AgreementTypeConsent': AgreementTypeConsent}
+        json = self.get(path, params)
+        return json
 
 
                               ####Organizations####
@@ -313,7 +407,7 @@ class CloudIQ():
             json (dictionary): OrganizationCollection Resource
                 https://apidocs.crayon.com/resources/OrganizationCollection.html
         """
-        path = 'Organizations'
+        path = self.baseURL + 'Organizations'
         json = self.get(path, filter)
         return json
 
@@ -330,7 +424,7 @@ class CloudIQ():
             json (dictionary): Organization Resource
                 https://apidocs.crayon.com/resources/Organization.html
         """
-        path = 'Organizations/' + str(orgID)
+        path = self.baseURL + 'Organizations/' + str(orgID)
         json = self.get(path)
         return json
 
@@ -345,7 +439,7 @@ class CloudIQ():
         Returns:
             json (dictionary): OrganizationSalesContact Resource
         """
-        path = 'Organizations/' + str(orgID) + "/salescontact"
+        path = self.baseURL + 'Organizations/' + str(orgID) + "/salescontact"
         json = self.get(path)
         return json
 
@@ -360,6 +454,6 @@ class CloudIQ():
         Returns:
             access (boolean): True or False
         """
-        path = "Organizations/HasAccess/" + str(orgID)
+        path = self.baseURL + "Organizations/HasAccess/" + str(orgID)
         access = self.get(path)
         return access

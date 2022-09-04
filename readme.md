@@ -50,7 +50,8 @@ REST method._ PUT, POST, and DELETE will be implemented at a later date.**
 		'OrganizationId': 123456,
 		'Include.ProductFamilyNames': 'Azure Active Directory'
 	}
-	response = crayon_api.get("https://api.crayon.com/api/v1/agreementproducts",params)
+	# make a GET request to https://api.crayon.com/api/v1/AgreementProducts
+	response = crayon_api.get("AgreementProducts",params)
 	print(response)
 	```
 
@@ -86,11 +87,22 @@ python3 example-products.py
 13. getAddress()
 14. getSupportedBillingCycles()
 15. getAgreements()
+16. getAgreementReports()
+17. getCustomerTenants()
+18. getCustomerTenant()
+19. getDetailedCustomerTenant()
+20. getCustomerTenantAzurePlan()
+21. getCustomerTenantAgreements()
 
 
-###  How to retrieve detailed docstring information on CloudIQ class
+##  How to retrieve detailed Docstring information on CloudIQ class
 
 ```
 from cloudiq import CloudIQ
 help(cloudIQ)
 ```
+
+### References
+
+1. Crayon API Documentation: https://apidocs.crayon.com/
+2. Swagger UI: https://api.crayon.com/docs/index.html
