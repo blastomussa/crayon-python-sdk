@@ -144,6 +144,12 @@ class CloudIQ():
 
 
     # DO NOT IMPLEMENT YET
+    # used by 2-3 endpoints
+    def _patch(self, path, data):
+        pass
+
+
+    # DO NOT IMPLEMENT YET
     # TODO: find resource that can be created and deleted easily; least destructive
     def _delete(self, path):
         pass
