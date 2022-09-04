@@ -51,7 +51,7 @@ REST method._ PUT, POST, and DELETE will be implemented at a later date.**
 		'Include.ProductFamilyNames': 'Azure Active Directory'
 	}
 	# make a GET request to https://api.crayon.com/api/v1/AgreementProducts
-	response = crayon_api.get("AgreementProducts",params)
+	response = crayon_api.get("https://api.crayon.com/api/v1/AgreementProducts",params)
 	print(response)
 	```
 
