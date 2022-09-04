@@ -581,7 +581,7 @@ class CloudIQ():
         Returns:
             json (dictionary): CrayonAccount Resource
         """
-        path = self.baseURL + 'Consumers/' + str(accountID)
+        path = self.baseURL + 'CrayonAccounts/' + str(accountID)
         json = self.get(path)
         return json
 
@@ -639,7 +639,7 @@ class CloudIQ():
         return json
 
 
-    def getDetailedCustomerTenant(self, tenantID):
+    def getCustomerTenantDetails(self, tenantID):
         """
         Get detailed information on a customer tenant
 
@@ -669,8 +669,140 @@ class CloudIQ():
         return json
 
 
+                            ####Groupings####
+    def getGroupings(self, orgID, filter=None):
+        """
+        Get a list of Groupings
 
-                              ####Organizations####
+        Args:
+            orgID (integer): REQUIRED
+            filter (dictionary): optional
+
+        Returns:
+            json (dictionary): List of Grouping Resources
+        """
+        path = self.baseURL + 'Groupings'
+        params = {'OrganizationId': orgID}
+        if(filter): params.update(filter)
+        json = self.get(path, params)
+        return json
+
+
+    def getGrouping(self, groupingID):
+        """
+        Get a grouping
+
+        Args:
+            groupingID (integer): REQUIRED
+
+        Returns:
+            json (dictionary): Grouping Resource
+        """
+        path = self.baseURL + 'Groupings/' + str(groupingID)
+        json = self.get(path)
+        return json
+
+
+                            ####InvoiceProfiles####
+    def getInvoiceProfiles(self, orgID, filter=None):
+        """
+        Get a list of invoice profiles
+
+        Args:
+            orgID (integer): REQUIRED
+            filter (dictionary): optional
+
+        Returns:
+            json (dictionary): List of InvoiceProfile Resources
+        """
+        path = self.baseURL + 'InvoiceProfiles'
+        params = {'OrganizationId': orgID}
+        if(filter): params.update(filter)
+        json = self.get(path, params)
+        return json
+
+    # Returning None. Bug?
+    def getInvoiceProfile(self, invoiceProfileID):
+        """
+        Get an InvoiceProfile
+
+        Args:
+            invoiceProfileID (integer): REQUIRED
+
+        Returns:
+            json (dictionary): InvoiceProfile Resource
+        """
+        path = self.baseURL + 'InvoiceProfiles/' + str(invoiceProfileID)
+        json = self.get(path)
+
+
+                            ####ManagementLinks####
+    # snagged; need subscriptionID filter?
+    def _getManagementLinks(self, filter=None):
+        """
+        Get a list of ManagementLinks
+
+        Args:
+            filter (dictionary): optional
+
+        Returns:
+            json (dictionary): List of ManagementLinks Resources
+        """
+        path = self.baseURL + 'ManagementLinks'
+        json = self.get(path, filter)
+        return json
+
+
+    # 403 Forbidden Error message
+    def _getGroupedManagementLinks(self, filter=None):
+        """
+        Get a list of ManagementLinks
+
+        Args:
+            filter (dictionary): optional
+
+        Returns:
+            json (dictionary): List of ManagementLinkGrouped Resources
+        """
+        path = self.baseURL + 'ManagementLinks/grouped'
+        json = self.get(path, filter)
+        return json
+
+
+                            ####OrganizationAccess####
+    # 'ErrorCode': '401 Unauthorized', 'Message': 'Invalid token'???
+    def _getOrganizationAccessGrant(self, filter=None):
+        """
+        Get a list of an organizations access grants.
+
+        Args:
+            filter (dictionary): optional
+
+        Returns:
+            json (dictionary): OrganizationAccess Resource
+        """
+        path = self.baseURL + 'OrganizationAccess/grant'
+        json = self.get(path, filter)
+        return json
+
+
+    # 'ErrorCode': '401 Unauthorized', 'Message': 'Invalid token'???
+    def _getOrganizationAccess(self, filter=None):
+        """
+        Get a list of an organizations access grants.
+
+        Args:
+            filter (dictionary): optional
+
+        Returns:
+            json (dictionary): OrganizationAccess Resource
+        """
+        path = self.baseURL + 'OrganizationAccess'
+        json = self.get(path, filter)
+        return json
+
+
+                            ####Organizations####
     def getOrganizations(self, filter=None):
         """
         Get a list of all organizations associated with account.
@@ -720,7 +852,7 @@ class CloudIQ():
         return json
 
 
-    def organizationHasAccess(self, orgID):
+    def getOrganizationHasAccess(self, orgID):
         """
         Test if current API credentials have access to an organization
 

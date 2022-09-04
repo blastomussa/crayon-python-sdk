@@ -82,7 +82,7 @@ python3 example-products.py
 8. getOrganizationSalesContact()
 9. getAgreementProducts()
 10. getActivityLogs()
-11. organizationHasAccess()
+11. getOrganizationHasAccess()
 12. getAddresses()
 13. getAddress()
 14. getSupportedBillingCycles()
@@ -90,7 +90,7 @@ python3 example-products.py
 16. getAgreementReports()
 17. getCustomerTenants()
 18. getCustomerTenant()
-19. getDetailedCustomerTenant()
+19. getCustomerTenantDetails()
 20. getCustomerTenantAzurePlan()
 21. getCustomerTenantAgreements()
 22. getBillingCycles()
@@ -108,6 +108,10 @@ python3 example-products.py
 34. getConsumer()
 35. getCrayonAccounts()
 36. getCrayonAccount()
+37. getGroupings()
+38. getGrouping()
+39. getInvoiceProfiles()
+40. getInvoiceProfile()
 
 
 ##  How to retrieve detailed Docstring information on CloudIQ class
