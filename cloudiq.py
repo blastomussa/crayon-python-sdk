@@ -254,7 +254,7 @@ class CloudIQ():
         https://apidocs.crayon.com/scenarios/agreementproducts-get.html
 
         Args:
-            orgID (integer): organization ID; REQUIRED PARAMETER *
+            orgID (integer): organization ID; REQUIRED
             filter (dictionary): optional filter results
                 https://apidocs.crayon.com/resources/AgreementProductFilter.html
                 * Filtering capabilities and parameters are better documented
@@ -276,7 +276,7 @@ class CloudIQ():
         Gets the supported billing cycles of a product
 
         Args:
-            partNumber (string): Part Number of Product; REQUIRED PARAMETER *
+            partNumber (string): Part Number of Product; REQUIRED
             filter (dictionary): optional filter results
 
         Returns:
@@ -314,6 +314,132 @@ class CloudIQ():
             json (dictionary): Agreement Report Resource
         """
         path = self.baseURL + 'AgreementReports/' + str(productContainerId)
+        json = self.get(path)
+        return json
+
+
+                              ####Billing Cycles####
+    def getBillingCycles(self, includeUnknown=False):
+        """
+        Get Billing Cycles
+
+        Args:
+            includeUnknown (boolean): optional filter
+
+        Returns:
+            json (dictionary): BillingCycle Resource
+        """
+        path = self.baseURL + 'BillingCycles'
+        params = {'includeUnknown': includeUnknown}
+        json = self.get(path, params)
+        return json
+
+
+    def getProductVariantBillingCycles(self, productVariantId):
+        """
+        Get Billing Cycles for a specific Product Variant
+
+        Args:
+            productVariantId (integer): REQUIRED
+
+        Returns:
+            json (dictionary): BillingCycle Resource
+        """
+        path = self.baseURL + 'BillingCycles/productVariant/' + str(productVariantId)
+        json = self.get(path)
+        return json
+
+
+    def getBillingCyclesCspNameDictionary(self):
+        """
+        Get Billing Cycle CSP Name Dictionary
+
+        Returns:
+            json (dictionary): Billing Cycle Name Dictionary
+        """
+        path = self.baseURL + 'BillingCycles/cspNameDictionary'
+        json = self.get(path)
+        return json
+
+
+                        ####Billing Statements####
+    def getBillingStatements(self, orgID, filter=None):
+        """
+        Get Billing Statements
+
+        Args:
+            orgID: organization ID; REQUIRED
+            filter (dictionary): optional filter
+
+        Returns:
+            json (dictionary): BillingStatement Resource
+        """
+        path = self.baseURL + 'BillingStatements'
+        params = {'OrganizationId': orgID}
+        if(filter): params.update(filter)
+        json = self.get(path, params)
+        return json
+
+
+    def getGroupedBillingStatements(self, orgID, filter=None):
+        """
+        Get Billing Statements
+
+        Args:
+            orgID: organization ID; REQUIRED
+            filter (dictionary): optional filter
+
+        Returns:
+            json (dictionary): GroupedBillingStatement Resource
+        """
+        path = self.baseURL + 'BillingStatements/grouped'
+        params = {'OrganizationId': orgID}
+        if(filter): params.update(filter)
+        json = self.get(path, params)
+        return json
+
+
+    def getBillingStatementExcel(self, statementID):
+        """
+        Get Billing statement Excel file
+
+        Args:
+            statementID (integer): REQUIRED
+
+        Returns:
+            json (dictionary): byte array of excel file
+        """
+        path = self.baseURL + 'BillingStatements/file/' + str(statementID)
+        json = self.get(path)
+        return json
+
+
+    def getBillingStatementCSV(self, statementID):
+        """
+        Get billing statement reconciliation file
+
+        Args:
+            statementID (integer): REQUIRED
+
+        Returns:
+            json (dictionary): byte array of CSV file
+        """
+        path = self.baseURL + 'BillingStatements/' + str(statementID) + '/reconciliationfile'
+        json = self.get(path)
+        return json
+
+
+    def getBillingStatementJSON(self, statementID):
+        """
+        Get Get billing statement reconciliation file
+
+        Args:
+            fileID (integer): REQUIRED
+
+        Returns:
+            json (dictionary): byte array of JSON file
+        """
+        path = self.baseURL + 'BillingStatements/' + str(statementID) + '/billingrecordsfile'
         json = self.get(path)
         return json
 
@@ -389,7 +515,7 @@ class CloudIQ():
 
         Args:
             tenantID (integer): REQUIRED
-            AgreementTypeConsent (integer): 0 or 1 REQUIRED
+            AgreementTypeConsent (integer): 0 or 1; REQUIRED
 
         Returns:
             json (dictionary): ServiceAccountAgreement Resource
@@ -424,7 +550,7 @@ class CloudIQ():
         https://apidocs.crayon.com/scenarios/organization-get.html
 
         Args:
-            orgID (integer): organization ID; REQUIRED PARAMETER *
+            orgID (integer): organization ID; REQUIRED
 
         Returns:
             json (dictionary): Organization Resource
@@ -440,7 +566,7 @@ class CloudIQ():
         Get the Sales Contact for an organization
 
         Args:
-            orgID (integer): organization ID; REQUIRED PARAMETER *
+            orgID (integer): organization ID; REQUIRED
 
         Returns:
             json (dictionary): OrganizationSalesContact Resource
@@ -455,7 +581,7 @@ class CloudIQ():
         Test if current API credentials have access to an organization
 
         Args:
-            orgID (integer): organization ID; REQUIRED PARAMETER *
+            orgID (integer): organization ID; REQUIRED
 
         Returns:
             access (boolean): True or False

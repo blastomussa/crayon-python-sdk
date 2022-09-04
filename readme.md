@@ -93,6 +93,14 @@ python3 example-products.py
 19. getDetailedCustomerTenant()
 20. getCustomerTenantAzurePlan()
 21. getCustomerTenantAgreements()
+22. getBillingCycles()
+23. getProductVariantBillingCycles()
+24. getBillingCyclesCspNameDictionary()
+25. getBillingStatements()
+26. getGroupedBillingStatements()
+27. getBillingStatementExcel()
+28. getBillingStatementCSV()
+29. getBillingStatementJSON()
 
 
 ##  How to retrieve detailed Docstring information on CloudIQ class

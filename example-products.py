@@ -29,6 +29,10 @@ filter = {
 
 response = crayon_api.getAgreementProducts(orgID, filter)
 
+
+print("-----------------------------------------------------------")
+print("ProductName: PartNumber/SKU")
+print("-----------------------------------------------------------")
 # response['Items'] contains filtered prodcut results
 for r in response['Items']:
     name = r['ProductVariant']['Product']['ItemLegalName']
