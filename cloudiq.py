@@ -993,6 +993,7 @@ class CloudIQ():
         response = self.get(path)
         return response
 
+
                             ####Regions####
     def getRegions(self, filter=None):
         """
@@ -1023,3 +1024,19 @@ class CloudIQ():
         params = {'regionCode': regionCode}
         response = self.get(path, params)
         return response
+
+
+                            ####Users####
+    def getUsers(self, filter=None):
+        """
+        Get a list of Users
+
+        Args:
+            filter (dictionary): optional
+
+        Returns:
+            json (dictionary): List of User Resources
+        """
+        path = self.baseURL + 'Users'
+        json = self.get(path, filter)
+        return json

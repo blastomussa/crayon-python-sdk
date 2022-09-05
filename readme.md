@@ -122,7 +122,7 @@ python3 example-products.py
 48. getPublisher()
 49. getRegions()
 50. getRegionByCode()
-
+51. getUsers()
 
 
 ##  How to retrieve detailed Docstring information on CloudIQ class
