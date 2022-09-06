@@ -1040,3 +1040,18 @@ class CloudIQ():
         path = self.baseURL + 'Users'
         json = self.get(path, filter)
         return json
+
+
+    def getUser(self, UserID):
+        """
+        Get a User
+
+        Args:
+            UserID (integer): REQUIRED
+
+        Returns:
+            json (dictionary): User Resource
+        """
+        path = self.baseURL + "Users/" + str(UserID)
+        response = self.get(path)
+        return response
