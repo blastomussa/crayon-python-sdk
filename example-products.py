@@ -42,7 +42,7 @@ for r in response['Items']:
 '''
 # list product families
 for r in response['ProductFamilies']:
-    print(r)
+    print(r['Key'])
 
 # list AgreementProductsCollection resource keys
 for r in response:
