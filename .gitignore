@@ -5,6 +5,7 @@
 /.DS_Store
 
 # Stuff I don't want pushed to github
+.gitignore
 tests/*
 /test.py
 

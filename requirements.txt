@@ -1,3 +1,2 @@
-time
 requests>2.0
 configparser>=5.3.0

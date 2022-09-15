@@ -31,6 +31,7 @@ class CloudIQ():
         self.password = password
         self.baseURL = 'https://api.crayon.com/api/v1/'
         self.tokenData = None
+        self.unixTTL = None
 
 
     #------------------------ Authorization and Authentication -----------------
@@ -57,9 +58,7 @@ class CloudIQ():
             response = requests.post(tokenURL, auth=basic, headers=header, data=params)
             if(int(response.status_code) == 200):
                 self.tokenData = response.json()
-                ttl = int(time())+ int(self.tokenData['ExpiresIn']) # Default TTL = 3600 seconds
-                expiration_time = {'UnixExpiration': ttl}
-                self.tokenData.update(expiration_time) # Add expiration time to tokenData
+                self.unixTTL = int(time()) + int(self.tokenData['ExpiresIn']) # Default TTL = 3600 seconds
                 return self.tokenData
             elif(int(response.status_code) == 400):
                 print("400 Bad Request. Please check the API credentials you provided.")
@@ -89,9 +88,9 @@ class CloudIQ():
         """
         if(not self.tokenData):  #test for tokenData definition
             self.getToken()
-        elif(self.tokenData['UnixExpiration'] > (int(time()) - 15)): #test for expiration
+        elif(self.unixTTL > (int(time()) - 5)): #test for expiration within 10 seconds
             self.getToken()
-        else: pass
+        
         return self.tokenData['AccessToken']
 
 
