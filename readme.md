@@ -124,6 +124,8 @@ python3 example-products.py
 50. getRegionByCode()
 51. getUsers()
 52. getUser()
+53. getUsername()
+54. getUsageCost()
 
 
 ##  How to retrieve detailed Docstring information on CloudIQ class

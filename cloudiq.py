@@ -1025,6 +1025,23 @@ class CloudIQ():
         return response
 
 
+                            ####UsageCost####
+    def getUsageCost(self, orgID, filter=None):
+        """
+        Get a Usage Cost
+
+        Args:
+            orgID (integer): REQUIRED
+            filter (disctionary): time range
+
+        Returns:
+            json (dictionary): OrganizationUsageCost Resource
+        """
+        path = self.baseURL + "UsageCost/organization/" + str(orgID)
+        response = self.get(path, filter)
+        return response
+
+
                             ####Users####
     def getUsers(self, filter=None):
         """
@@ -1054,3 +1071,20 @@ class CloudIQ():
         path = self.baseURL + "Users/" + str(UserID)
         response = self.get(path)
         return response
+
+    def getUsername(self, username):
+        """
+        Get a User
+
+        Args:
+            Username (string): REQUIRED
+
+        Returns:
+            json (dictionary): User Resource
+        """
+        path = self.baseURL + "Users/user"
+        params = {'userName': username}
+        response = self.get(path, params)
+        return response
+
+    
