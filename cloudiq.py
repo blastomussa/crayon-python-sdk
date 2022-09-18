@@ -95,13 +95,13 @@ class CloudIQ():
 
 
     #----------------------------- REST METHODS --------------------------------
-    def get(self, url, params=None):
+    def get(self, path, params=None):
         """
         Retrieves valid token, assembles Authorization Header and makes a GET
-        requests to a specified endpoint.
+        request to a specified endpoint.
 
         Args:
-            path (string): API endoint; DO NOT include 'https://api.crayon.com/api/v1/'
+            path (string): API endoint; DOES NOT include 'https://api.crayon.com/api/v1/'
             params (dictionary): filters and parameters for GET requests
 
         Returns:
@@ -114,7 +114,7 @@ class CloudIQ():
             'Content-Type': 'application/json'
             }
         try:
-            response = requests.get(url, headers=header, params=params)
+            response = requests.get(url=path, headers=header, params=params)
             if(int(response.status_code) == 200):
                 return response.json()
             else:
@@ -150,11 +150,32 @@ class CloudIQ():
         pass
 
 
-    # DO NOT IMPLEMENT YET
-    # TODO: find resource that can be created and deleted easily; least destructive
-    # TEST WITH: /api/v1/Clients/{clientID}
-    def _delete(self, path):
-        pass
+    # TEST WITH: /api/v1/Clients/{clientID} during work day; verify in CloudIQ portal
+    def delete(self, path):
+        """
+        Retrieves valid token, assembles Authorization Header and makes a DELETE
+        request to a specified endpoint.
+
+        Args:
+            path (string): API endoint; DOES NOT include 'https://api.crayon.com/api/v1/'
+
+        Returns:
+            response.status_code (dictionary): JSON response to DELETE request
+        """
+        auth = 'Bearer ' + self.validateToken()
+        header = {
+            'Authorization': auth,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+            }
+        try:
+            response = requests.delete(url=path, headers=header)
+            return response.status_code
+
+        except requests.exceptions.ConnectionError:
+            print("Connection Error. Please check your connection to the internet.")
+            exit(1)
+        
 
 
     #----------------------------- API METHODS ---------------------------------
@@ -318,6 +339,32 @@ class CloudIQ():
         path = self.baseURL + 'AgreementReports/' + str(productContainerId)
         json = self.get(path)
         return json
+
+
+                              ####Assets####
+
+    '''
+    # delete prototype
+    def delete_ (self, ID):
+        """
+        Delete a
+
+        Args:
+            ID: Required 
+
+        Returns:
+            status code (int): 200=success
+        """
+        path = self.baseURL + "" + ID
+        status_code = self.delete(path)
+        return status_code
+    '''
+
+
+                              ####AWS Accounts####
+
+
+                              ####Azure Plans####
 
 
                               ####Billing Cycles####
@@ -493,16 +540,22 @@ class CloudIQ():
         return json
 
 
-    def _createClient(self):
-        pass
+    '''
+    # delete prototype
+    def delete_ (self, ID):
+        """
+        Delete a
 
+        Args:
+            ID: Required 
 
-    def _updateClient(self):
-        pass
-
-
-    def _deleteClient(self):
-        pass
+        Returns:
+            status code (int): 200=success
+        """
+        path = self.baseURL + "" + ID
+        status_code = self.delete(path)
+        return status_code
+    '''
 
 
                             ####Consumers####
@@ -538,17 +591,22 @@ class CloudIQ():
         json = self.get(path)
         return json
 
+    '''
+    # delete prototype
+    def delete_ (self, ID):
+        """
+        Delete a
 
-    def _createConsumer(self):
-        pass
+        Args:
+            ID: Required 
 
-
-    def _updateConsumer(self):
-        pass
-
-
-    def _deleteConsumer(self):
-        pass
+        Returns:
+            status code (int): 200=success
+        """
+        path = self.baseURL + "" + ID
+        status_code = self.delete(path)
+        return status_code
+    '''
 
 
                             ####CrayonAccounts####
@@ -667,6 +725,24 @@ class CloudIQ():
         json = self.get(path)
         return json
 
+    
+    '''
+    # delete prototype
+    def delete_ (self, ID):
+        """
+        Delete a
+
+        Args:
+            ID: Required 
+
+        Returns:
+            status code (int): 200=success
+        """
+        path = self.baseURL + "" + ID
+        status_code = self.delete(path)
+        return status_code
+    '''
+
 
                             ####Groupings####
     def getGroupings(self, orgID, filter=None):
@@ -701,6 +777,23 @@ class CloudIQ():
         json = self.get(path)
         return json
 
+    '''
+    # delete prototype
+    def delete_ (self, ID):
+        """
+        Delete a
+
+        Args:
+            ID: Required 
+
+        Returns:
+            status code (int): 200=success
+        """
+        path = self.baseURL + "" + ID
+        status_code = self.delete(path)
+        return status_code
+    '''
+
 
                             ####InvoiceProfiles####
     def getInvoiceProfiles(self, orgID, filter=None):
@@ -733,6 +826,24 @@ class CloudIQ():
         """
         path = self.baseURL + 'InvoiceProfiles/' + str(invoiceProfileID)
         json = self.get(path)
+
+
+    '''
+    # delete prototype
+    def delete_ (self, ID):
+        """
+        Delete a
+
+        Args:
+            ID: Required 
+
+        Returns:
+            status code (int): 200=success
+        """
+        path = self.baseURL + "" + ID
+        status_code = self.delete(path)
+        return status_code
+    '''
 
 
                             ####ManagementLinks####
@@ -931,6 +1042,24 @@ class CloudIQ():
         return response
 
 
+    '''
+    # delete prototype
+    def delete_ (self, ID):
+        """
+        Delete a
+
+        Args:
+            ID: Required 
+
+        Returns:
+            status code (int): 200=success
+        """
+        path = self.baseURL + "" + ID
+        status_code = self.delete(path)
+        return status_code
+    '''
+
+
                             ####Programs####
     def getPrograms(self, filter=None):
         """
@@ -1025,6 +1154,64 @@ class CloudIQ():
         return response
 
 
+                            ####ResellerSalesPrices####
+    '''
+    # delete prototype
+    def delete_ (self, ID):
+        """
+        Delete a
+
+        Args:
+            ID: Required 
+
+        Returns:
+            status code (int): 200=success
+        """
+        path = self.baseURL + "" + ID
+        status_code = self.delete(path)
+        return status_code
+    '''
+
+
+                            ####Secrets####
+    '''
+    # delete prototype
+    def delete_ (self, ID):
+        """
+        Delete a
+
+        Args:
+            ID: Required 
+
+        Returns:
+            status code (int): 200=success
+        """
+        path = self.baseURL + "" + ID
+        status_code = self.delete(path)
+        return status_code
+    '''
+
+
+                            ####Subscriptions####
+    '''
+    # delete prototype
+    def delete_ (self, ID):
+        """
+        Delete a
+
+        Args:
+            ID: Required 
+
+        Returns:
+            status code (int): 200=success
+        """
+        path = self.baseURL + "" + ID
+        status_code = self.delete(path)
+        return status_code
+    '''
+
+    
+
                             ####UsageCost####
     def getUsageCost(self, orgID, filter=None):
         """
@@ -1086,5 +1273,22 @@ class CloudIQ():
         params = {'userName': username}
         response = self.get(path, params)
         return response
+
+    '''
+    # delete prototype
+    def delete_ (self, ID):
+        """
+        Delete a
+
+        Args:
+            ID: Required 
+
+        Returns:
+            status code (int): 200=success
+        """
+        path = self.baseURL + "" + ID
+        status_code = self.delete(path)
+        return status_code
+    '''
 
     
