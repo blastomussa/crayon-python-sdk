@@ -540,22 +540,19 @@ class CloudIQ():
         return json
 
 
-    '''
-    # delete prototype
-    def delete_ (self, ID):
+    def deleteClient (self, clientID):
         """
-        Delete a
+        Delete a api client
 
         Args:
-            ID: Required 
+            clientID: Required 
 
         Returns:
-            status code (int): 200=success
+            status code (int): 200 success
         """
-        path = self.baseURL + "" + ID
+        path = self.baseURL + "Clients/" + str(clientID)
         status_code = self.delete(path)
         return status_code
-    '''
 
 
                             ####Consumers####
@@ -1259,6 +1256,7 @@ class CloudIQ():
         response = self.get(path)
         return response
 
+
     def getUsername(self, username):
         """
         Get a User
@@ -1274,21 +1272,19 @@ class CloudIQ():
         response = self.get(path, params)
         return response
 
-    '''
-    # delete prototype
-    def delete_ (self, ID):
+
+    def deleteUser (self, userID):
         """
-        Delete a
+        Delete a User
 
         Args:
-            ID: Required 
+            userID: Required 
 
         Returns:
-            status code (int): 200=success
+            status code (int): 200 success
         """
-        path = self.baseURL + "" + ID
+        path = self.baseURL + "Users/" + str(userID)
         status_code = self.delete(path)
         return status_code
-    '''
 
     
