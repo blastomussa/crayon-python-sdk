@@ -5,7 +5,8 @@ scripts and applications. Provides a simple interface for individuals who are
 inexperienced in C# to test Cloud IQ API calls with Python.
 
 **As of right now, this is a non-destructive test suite that _only provides the GET
-REST method._ PUT, POST, PATCH, and DELETE will be implemented later.**
+REST method. DELETE is currently implemented and is being tested._ 
+PUT, POST, and PATCH will be implemented later.**
 
 ## Installation
 
@@ -126,6 +127,7 @@ python3 example-products.py
 52. getUser()
 53. getUsername()
 54. getUsageCost()
+55. All delete calls are in testing.
 
 
 ##  How to retrieve detailed Docstring information on CloudIQ class
