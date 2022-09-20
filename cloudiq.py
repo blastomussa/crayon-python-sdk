@@ -88,7 +88,7 @@ class CloudIQ():
         """
         if(not self.tokenData):  #test for tokenData definition
             self.getToken()
-        elif(self.unixTTL > (int(time()) - 5)): #test for expiration within 10 seconds
+        elif(self.unixTTL > (int(time()) - 600)): #test for expiration within 10 minutes
             self.getToken()
         
         return self.tokenData['AccessToken']
