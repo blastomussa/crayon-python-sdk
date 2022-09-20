@@ -151,7 +151,7 @@ class CloudIQ():
 
 
     # TEST WITH: /api/v1/Clients/{clientID} during work day; verify in CloudIQ portal
-    def delete(self, path):
+    def delete(self, path, params=None):
         """
         Retrieves valid token, assembles Authorization Header and makes a DELETE
         request to a specified endpoint.
@@ -169,7 +169,7 @@ class CloudIQ():
             'Content-Type': 'application/json'
             }
         try:
-            response = requests.delete(url=path, headers=header)
+            response = requests.delete(url=path, headers=header, params=params)
             return response.status_code
 
         except requests.exceptions.ConnectionError:
@@ -326,6 +326,7 @@ class CloudIQ():
         return json
 
 
+                              ####AgreementReports####
     def getAgreementReports(self, productContainerId):
         """
         Get Agreement Reports
@@ -342,23 +343,20 @@ class CloudIQ():
 
 
                               ####Assets####
-
-    '''
-    # delete prototype
-    def delete_ (self, ID):
+    def deleteAssetTag(self, assetID):
         """
-        Delete a
+        Delete an Asset tag
 
         Args:
-            ID: Required 
+            assetID: Required 
 
         Returns:
-            status code (int): 200=success
+            status code (int): 200 success
         """
-        path = self.baseURL + "" + ID
+        path = self.baseURL + "Assets/" + str(assetID) + "/tags"
         status_code = self.delete(path)
         return status_code
-    '''
+    
 
 
                               ####AWS Accounts####
@@ -588,22 +586,21 @@ class CloudIQ():
         json = self.get(path)
         return json
 
-    '''
-    # delete prototype
-    def delete_ (self, ID):
+
+    def deleteConsumer (self, consumerID):
         """
-        Delete a
+        Delete a Consumer
 
         Args:
-            ID: Required 
+            consumerID: Required 
 
         Returns:
-            status code (int): 200=success
+            status code (int): 200 success
         """
-        path = self.baseURL + "" + ID
+        path = self.baseURL + "Consumers/" + str(consumerID)
         status_code = self.delete(path)
         return status_code
-    '''
+
 
 
                             ####CrayonAccounts####
@@ -722,23 +719,20 @@ class CloudIQ():
         json = self.get(path)
         return json
 
-    
-    '''
-    # delete prototype
-    def delete_ (self, ID):
+
+    def deleteCustomerTenant (self, tenantID):
         """
         Delete a
 
         Args:
-            ID: Required 
+            tenantID: Required 
 
         Returns:
-            status code (int): 200=success
+            status code (int): 200 success
         """
-        path = self.baseURL + "" + ID
+        path = self.baseURL + "CustomerTenants/" + str(tenantID)
         status_code = self.delete(path)
         return status_code
-    '''
 
 
                             ####Groupings####
@@ -774,22 +768,22 @@ class CloudIQ():
         json = self.get(path)
         return json
 
-    '''
-    # delete prototype
-    def delete_ (self, ID):
+
+ 
+    def deleteGroupings (self, groupingID):
         """
-        Delete a
+        Delete a Groouping
 
         Args:
-            ID: Required 
+            groupingID: Required 
 
         Returns:
-            status code (int): 200=success
+            status code (int): 200 success
         """
-        path = self.baseURL + "" + ID
+        path = self.baseURL + "Groupings/" + str(groupingID)
         status_code = self.delete(path)
         return status_code
-    '''
+
 
 
                             ####InvoiceProfiles####
@@ -825,26 +819,24 @@ class CloudIQ():
         json = self.get(path)
 
 
-    '''
-    # delete prototype
-    def delete_ (self, ID):
+    def deleteInvoiceProfile(self, invoiceprofileID):
         """
-        Delete a
+        Delete an Invoice Profile
 
         Args:
-            ID: Required 
+            invoiceprofileID: Required 
 
         Returns:
-            status code (int): 200=success
+            status code (int): 200 success
         """
-        path = self.baseURL + "" + ID
+        path = self.baseURL + "InvoiceProfiles/" + str(invoiceprofileID)
         status_code = self.delete(path)
         return status_code
-    '''
 
 
                             ####ManagementLinks####
     # snagged; need subscriptionID filter?
+    # RETEST!!
     def _getManagementLinks(self, filter=None):
         """
         Get a list of ManagementLinks
@@ -1039,22 +1031,19 @@ class CloudIQ():
         return response
 
 
-    '''
-    # delete prototype
-    def delete_ (self, ID):
+    def deleteProductContainer (self, productcontainerID):
         """
-        Delete a
+        Delete a Product Container
 
         Args:
-            ID: Required 
+            productcontainerID: Required 
 
         Returns:
-            status code (int): 200=success
+            status code (int): 200 success
         """
-        path = self.baseURL + "" + ID
+        path = self.baseURL + "ProductContainers/" + str(productcontainerID)
         status_code = self.delete(path)
         return status_code
-    '''
 
 
                             ####Programs####
@@ -1152,60 +1141,61 @@ class CloudIQ():
 
 
                             ####ResellerSalesPrices####
-    '''
-    # delete prototype
-    def delete_ (self, ID):
+
+    def deleteResellerSalesPrices (self, objectID, filter=None):
         """
-        Delete a
+        Delete Reseller Sales Prices
 
         Args:
-            ID: Required 
+            objectID: Required 
+            filter (dictionary): optional
 
         Returns:
-            status code (int): 200=success
+            status code (int): 200 success
         """
-        path = self.baseURL + "" + ID
-        status_code = self.delete(path)
+        params  = {"objectID": objectID}
+        if(filter): params.update(filter)
+        path = self.baseURL + "ResellerSalesPrices"
+        status_code = self.delete(path, params)
         return status_code
-    '''
 
 
                             ####Secrets####
-    '''
-    # delete prototype
-    def delete_ (self, ID):
+ 
+    def deleteSecret (self, clientID, secretID):
         """
-        Delete a
+        Delete a API Client Secret
 
         Args:
-            ID: Required 
+            clientID: Required 
+            secretID: Required
 
         Returns:
-            status code (int): 200=success
+            status code (int): 200 success
         """
-        path = self.baseURL + "" + ID
-        status_code = self.delete(path)
+        path = self.baseURL + "Secrets"
+        params = {
+            "clientID": clientID,
+            "secretID": secretID
+        }
+        status_code = self.delete(path, params)
         return status_code
-    '''
 
 
                             ####Subscriptions####
-    '''
-    # delete prototype
-    def delete_ (self, ID):
+    def deleteSubscriptionTag (self, subscriptionID):
         """
-        Delete a
+        Delete a Subscription Tag
 
         Args:
-            ID: Required 
+            subscriptionID: Required 
 
         Returns:
-            status code (int): 200=success
+            status code (int): 200 success
         """
-        path = self.baseURL + "" + ID
+        path = self.baseURL + "Subscriptions/" + str(subscriptionID) +"/tags"
         status_code = self.delete(path)
         return status_code
-    '''
 
     
 
