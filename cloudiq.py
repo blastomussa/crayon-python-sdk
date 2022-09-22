@@ -144,12 +144,37 @@ class CloudIQ():
         pass
 
 
-    # DO NOT IMPLEMENT YET
-    # used by 2-3 endpoints
-    def _patch(self, path, data):
-        pass
+    # UNTESTED
+    # Check Content type in header
+    def patch(self, path, data):
+        """
+        Only used for two operations: renaming Azure Subscription and updating product container row
+        """
+        auth = 'Bearer ' + self.validateToken()
+        header = {
+            'Authorization': auth,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json-patch+json'
+            }
+        try:
+            response = requests.patch(url=path, headers=header, data=data)
+            if(int(response.status_code) == 200):
+                return response.json()
+            else:
+                print(str(response.status_code) + " Error")
+                try:
+                    print(response.json())
+                except requests.exceptions.JSONDecodeError:
+                    print(response)
+                exit(1)
+
+        except requests.exceptions.ConnectionError:
+            print("Connection Error. Please check your connection to the internet.")
+            exit(1)
 
 
+    # UNTESTED
+    # Check Accept in header
     # TEST WITH: /api/v1/Clients/{clientID} during work day; verify in CloudIQ portal
     def delete(self, path, params=None):
         """
@@ -165,8 +190,7 @@ class CloudIQ():
         auth = 'Bearer ' + self.validateToken()
         header = {
             'Authorization': auth,
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Accept': '*/*',
             }
         try:
             response = requests.delete(url=path, headers=header, params=params)
@@ -363,6 +387,24 @@ class CloudIQ():
 
 
                               ####Azure Plans####
+
+    def renameAzureSubscription(self, azurePlanID, subscriptionID, data):
+        """
+        Rename an Azure Subscription
+
+        Args:
+            azurePlanID: Azure Plan ID; required
+            subscriptionID: required
+            data (dictionary): AzureSubscriptionRename Schema; required
+        
+        Returns:
+            json (dictionary): AzureSubscriptionUpdated Resource
+        """
+        path = self.baseURL + "AzurePlans/" + str(azurePlanID) + "/azureSubscriptions/" + str(subscriptionID) + "/rename"
+        json = self.patch(path,data)
+        return json
+
+
 
 
                               ####Billing Cycles####
@@ -1044,6 +1086,24 @@ class CloudIQ():
         path = self.baseURL + "ProductContainers/" + str(productcontainerID)
         status_code = self.delete(path)
         return status_code
+
+
+    def patchProductContainerRow(self, containerID, rowID, data):
+        """
+        Rename an Azure Subscription
+
+        Args:
+            containerID: Product Container ID; required
+            rowID: required
+            data (dictionary): ProductRowPatch Schema; required
+        
+        Returns:
+            json (dictionary): ProductContainer Resource
+        """
+        path = self.baseURL + "ProductContainers/" + str(containerID) + "/row/" + str(rowID)
+        json = self.patch(path,data)
+        return json
+
 
 
                             ####Programs####
