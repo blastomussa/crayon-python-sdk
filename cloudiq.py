@@ -1,4 +1,4 @@
-# Author: Blastomussa
+# Author: Joe Courtney
 # Date: 7/25/22
 import requests
 from time import time
@@ -240,7 +240,7 @@ class CloudIQ():
             exit(1)
 
 
-    # TESTED: Working. Should it return any data (api mostly retunrs boolean for delete) or just stsatus code
+    # TESTED: Working. Should it return any data (api mostly retunrs boolean for delete) or just status code
     def delete(self, path, params=None):
         """
         Retrieves valid token, assembles Authorization Header and makes a DELETE
@@ -1303,6 +1303,20 @@ class CloudIQ():
 
 
                             ####Secrets####
+    def createSecret(self, schema):
+        """
+        Create an API Client Secret
+
+        Args: 
+            schema (dictionary): Secret Schema; null unknown fields
+
+        Returns:
+            json (dictionary): Secret Schema
+        """
+        path = self.baseURL + "Secrets"
+        json = self.post(path, schema)
+        return json
+
  
     def deleteSecret (self, clientID, secretID):
         """
