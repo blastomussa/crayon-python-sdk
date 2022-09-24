@@ -145,7 +145,6 @@ class CloudIQ():
         auth = 'Bearer ' + self.validateToken()
         header = {
             'Authorization': auth,
-            #'Accept': 'application/json',
             'Content-Type': 'application/json'
             }
         try:
