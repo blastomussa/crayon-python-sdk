@@ -4,9 +4,9 @@ This project is an SDK for Crayon's CloudIQ API that can be used in Python
 scripts and applications. Provides a simple interface for individuals who are
 inexperienced in C# to test Cloud IQ API calls with Python.
 
-**As of right now, this is a non-destructive test suite that _only provides the GET
-REST method. DELETE and PATCH are currently implemented and being tested._ 
-PUT and POST calls will be implemented later.**
+**Use at your own risk. Only use POST, PUT, PATCH and DELETE methods if you understand the consequenses**
+
+MIT License: https://github.com/blastomussa/crayon-python-sdk/blob/master/LICENSE 
 
 ## Installation
 
@@ -127,18 +127,24 @@ python3 example-products.py
 52. getUser()
 53. getUsername()
 54. getUsageCost()
-55. All delete calls are in testing.
-56. All patch calls are in testing 
+55. delete()
+56. patch() 
+57. post()
+58. put()
+59. createClient()
+60. deleteClient()
+
 
 
 ##  How to retrieve detailed Docstring information on CloudIQ class
 
 ```
 from cloudiq import CloudIQ
-help(cloudIQ)
+help(CloudIQ)
 ```
 
 ### References
 
 1. Crayon API Documentation: https://apidocs.crayon.com/
-2. Swagger UI: https://api.crayon.com/docs/index.html
+2. Swagger UI (includes all valid schemas): https://api.crayon.com/docs/index.html
+

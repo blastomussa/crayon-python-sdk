@@ -105,7 +105,7 @@ class CloudIQ():
             params (dictionary): filters and parameters for GET requests
 
         Returns:
-            response.json (dictionary): JSON response to GET request
+            response.json (dictionary): resource schema 
         """
         auth = 'Bearer ' + self.validateToken()
         header = {
@@ -130,34 +130,26 @@ class CloudIQ():
             exit(1)
 
 
-    # DO NOT IMPLEMENT YET
-    # TODO: find resource that can be created and deleted easily;
-    # TEST WITH: /api/v1/Clients
-    def _post(self, path, data):
-        pass
-
-
-    # DO NOT IMPLEMENT YET
-    # TODO: find resource that can be updated easily and non-destructively
-    # TEST WITH: /api/v1/Clients/{clientID}
-    def _put(self, path, data):
-        pass
-
-
-    # UNTESTED
-    # Check Content type in header
-    def patch(self, path, data):
+    def post(self, path, data):
         """
-        Only used for two operations: renaming Azure Subscription and updating product container row
+        Retrieves valid token, assembles Authorization Header and makes a POST
+        request to a specified endpoint.
+  
+        Args:
+            path (string): API endoint; DOES NOT include 'https://api.crayon.com/api/v1/'
+            data (dictionary): resource schema in json(dict) form
+
+         Returns:
+            response.json (dictionary): resource schema 
         """
         auth = 'Bearer ' + self.validateToken()
         header = {
             'Authorization': auth,
-            'Accept': 'application/json',
-            'Content-Type': 'application/json-patch+json'
+            #'Accept': 'application/json',
+            'Content-Type': 'application/json'
             }
         try:
-            response = requests.patch(url=path, headers=header, data=data)
+            response = requests.post(url=path, headers=header, json=data)
             if(int(response.status_code) == 200):
                 return response.json()
             else:
@@ -174,8 +166,82 @@ class CloudIQ():
 
 
     # UNTESTED
-    # Check Accept in header
-    # TEST WITH: /api/v1/Clients/{clientID} during work day; verify in CloudIQ portal
+    # TODO: find resource that can be updated easily and non-destructively
+    # TEST WITH: /api/v1/Clients/{clientID}
+    def put(self, path, data):
+        """
+        Retrieves valid token, assembles Authorization Header and makes a PUT
+        request to a specified endpoint.
+
+        Args:
+            path (string): API endoint; DOES NOT include 'https://api.crayon.com/api/v1/'
+            data (dictionary): resource schema in json(dict) form
+        
+         Returns:
+            response.json (dictionary): resource schema 
+        """
+        auth = 'Bearer ' + self.validateToken()
+        header = {
+            'Authorization': auth,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+            }
+        try:
+            response = requests.post(url=path, headers=header, json=data)
+            if(int(response.status_code) == 200):
+                return response.json()
+            else:
+                print(str(response.status_code) + " Error")
+                try:
+                    print(response.json())
+                except requests.exceptions.JSONDecodeError:
+                    print(response)
+                exit(1)
+
+        except requests.exceptions.ConnectionError:
+            print("Connection Error. Please check your connection to the internet.")
+            exit(1)
+
+
+    # UNTESTED
+    # Check Content type in header
+    def patch(self, path, data):
+        """
+        Retrieves valid token, assembles Authorization Header and makes a PATCH
+        request to a specified endpoint. Only used for two operations: renaming 
+        Azure Subscription and updating product container row
+
+        Args:
+            path (string): API endoint; DOES NOT include 'https://api.crayon.com/api/v1/'
+            data (dictionary): resource schema in json(dict) form
+
+         Returns:
+            response.json (dictionary): resource schema 
+        """
+        auth = 'Bearer ' + self.validateToken()
+        header = {
+            'Authorization': auth,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json-patch+json'
+            }
+        try:
+            response = requests.patch(url=path, headers=header, json=data)
+            if(int(response.status_code) == 200):
+                return response.json()
+            else:
+                print(str(response.status_code) + " Error")
+                try:
+                    print(response.json())
+                except requests.exceptions.JSONDecodeError:
+                    print(response)
+                exit(1)
+
+        except requests.exceptions.ConnectionError:
+            print("Connection Error. Please check your connection to the internet.")
+            exit(1)
+
+
+    # TESTED: Working. Should it return any data (api mostly retunrs boolean for delete) or just stsatus code
     def delete(self, path, params=None):
         """
         Retrieves valid token, assembles Authorization Header and makes a DELETE
@@ -183,6 +249,7 @@ class CloudIQ():
 
         Args:
             path (string): API endoint; DOES NOT include 'https://api.crayon.com/api/v1/'
+            params (dictionary): optional parameters used for some calls
 
         Returns:
             response.status_code (dictionary): JSON response to DELETE request
@@ -582,7 +649,7 @@ class CloudIQ():
 
     def deleteClient (self, clientID):
         """
-        Delete a api client
+        Delete an API Client. Disables Client but doesn't remove it?
 
         Args:
             clientID: Required 
@@ -593,6 +660,22 @@ class CloudIQ():
         path = self.baseURL + "Clients/" + str(clientID)
         status_code = self.delete(path)
         return status_code
+
+
+    def createClient(self, schema):
+        """
+        Create an API Client
+
+        Args: 
+            schema (dictionary): Client Schema; null unknown fields
+
+        Returns:
+            json (dictionary): Client Schema
+        """
+        path = self.baseURL + "Clients"
+        json = self.post(path, schema)
+        return json
+
 
 
                             ####Consumers####
