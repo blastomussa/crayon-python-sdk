@@ -164,7 +164,7 @@ class CloudIQ():
             exit(1)
 
 
-    # UNTESTED
+    # UNTESTED; not working correctly 405 with PUT client
     # TODO: find resource that can be updated easily and non-destructively
     # TEST WITH: /api/v1/Clients/{clientID}
     def put(self, path, data):
@@ -183,7 +183,7 @@ class CloudIQ():
         header = {
             'Authorization': auth,
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json-patch+json'
             }
         try:
             response = requests.post(url=path, headers=header, json=data)
@@ -453,7 +453,41 @@ class CloudIQ():
 
 
                               ####Azure Plans####
+    def getAzurePlan(self, azurePlanID):
+        """
+        Get an Azure Plan
 
+        Args:
+            azurePlanID (int): required; can be found using getCustomerTenantAzurePlan()
+
+        Returns:
+            json (dict): Azure plan resource schema
+
+        """
+        path = self.baseURL + "AzurePlans/" + str(azurePlanID)
+        json = self.get(path)
+        return json
+
+
+    def getAzureSubscriptions(self, azurePlanID, filter=None):
+        """
+        Get Azure Subscriptions in an Azure Plan
+
+        Args:
+            azurePlanID (int): required; can be found using getCustomerTenantAzurePlan()
+            filter : Page and PageSize required to make this call
+
+        Returns:
+            json (dict): Azure Subscription resource schema
+
+        """
+        path = self.baseURL + "AzurePlans/" + str(azurePlanID) + "/azureSubscriptions"
+        json = self.get(path,filter)
+        return json
+
+
+
+    # TEST THIS
     def renameAzureSubscription(self, azurePlanID, subscriptionID, data):
         """
         Rename an Azure Subscription
@@ -673,6 +707,15 @@ class CloudIQ():
         """
         path = self.baseURL + "Clients"
         json = self.post(path, schema)
+        return json
+
+
+    def updateClient(self, clientID, schema):
+        """
+        """
+        path = self.baseURL + "Clients/" + str(clientID)
+        print(schema)
+        json = self.put(path, schema)
         return json
 
 
