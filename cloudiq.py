@@ -14,7 +14,7 @@ class CloudIQ():
         baseURL (string): Base URL of CloudIQ API https://api.crayon.com/api/v1
         tokenData (dictionary/json): Token used to authenticate REST methods
     """
-    def __init__(self, client_id, client_secret, username, password):
+    def __init__(self, client_id=None, client_secret=None, username=None, password=None):
         """
         Initiates class with credentials necessary for Resource Password Flow Auth
         https://apidocs.crayon.com/getting-started/authentication.html#resourcepasswordflow
@@ -36,9 +36,10 @@ class CloudIQ():
 
     #------------------------ Authorization and Authentication -----------------
     def getToken(self):
+        # research implicit flow implimentation
         """
         Posts client credentials and secrets to https://api.crayon.com/api/v1/connect/token/
-        which returns an access token if credentials are valid.
+        which returns an access token if credentials are valid. Uses ResourcePasswordFlow.
         https://apidocs.crayon.com/scenarios/token-get.html
 
         Returns:
@@ -165,9 +166,8 @@ class CloudIQ():
 
 
     # UNTESTED; not working correctly 405 with PUT client
-    # TODO: find resource that can be updated easily and non-destructively
     # TEST WITH: /api/v1/Clients/{clientID}
-    def put(self, path, data):
+    def _put(self, path, data):
         """
         Retrieves valid token, assembles Authorization Header and makes a PUT
         request to a specified endpoint.
@@ -203,8 +203,9 @@ class CloudIQ():
 
 
     # UNTESTED
+    # test with Azure subscription rename
     # Check Content type in header
-    def patch(self, path, data):
+    def _patch(self, path, data):
         """
         Retrieves valid token, assembles Authorization Header and makes a PATCH
         request to a specified endpoint. Only used for two operations: renaming 
@@ -277,13 +278,13 @@ class CloudIQ():
             json (dictionary): Version and Environment Information
         """
         try:
-            url = self.baseURL + "ping"
+            url = f"{self.baseURL}ping"
             header = {'accept': '*/*'}
             response = requests.get(url, headers=header)
             if(int(response.status_code) == 200):
                 return response.json()
             else:
-                print(str(response.status_code) + " Error")
+                print(f"{response.status_code} Error")
                 print(response.json())
                 exit(1)
 
@@ -399,6 +400,39 @@ class CloudIQ():
         json = self.get(path, params=filter)
         return json
 
+    
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
+
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
+
 
                               ####Agreements####
     def getAgreements(self, filter=None):
@@ -446,6 +480,56 @@ class CloudIQ():
         path = self.baseURL + "Assets/" + str(assetID) + "/tags"
         status_code = self.delete(path)
         return status_code
+
+
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
+
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
+
+
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
     
 
 
@@ -486,6 +570,54 @@ class CloudIQ():
         return json
 
 
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
+
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
+
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
+
 
     # TEST THIS
     def renameAzureSubscription(self, azurePlanID, subscriptionID, data):
@@ -501,7 +633,7 @@ class CloudIQ():
             json (dictionary): AzureSubscriptionUpdated Resource
         """
         path = self.baseURL + "AzurePlans/" + str(azurePlanID) + "/azureSubscriptions/" + str(subscriptionID) + "/rename"
-        json = self.patch(path,data)
+        json = self._patch(path,data)
         return json
 
 
@@ -710,12 +842,13 @@ class CloudIQ():
         return json
 
 
+    # NOT WORKING; MIGHT BE SCHEMA MIGHT BE SOMETHING ELSE 405 error
     def updateClient(self, clientID, schema):
         """
         """
         path = self.baseURL + "Clients/" + str(clientID)
         print(schema)
-        json = self.put(path, schema)
+        json = self._put(path, schema)
         return json
 
 
@@ -753,6 +886,23 @@ class CloudIQ():
         json = self.get(path)
         return json
 
+    
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
+
 
     def deleteConsumer (self, consumerID):
         """
@@ -789,6 +939,23 @@ class CloudIQ():
         return json
 
 
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
+
+
     def getCrayonAccount(self, accountID):
         """
         Get Crayon Account
@@ -822,6 +989,23 @@ class CloudIQ():
         return json
 
 
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
+
+
 
                             ####CustomerTenants####
     def getCustomerTenants(self, orgID, filter=None):
@@ -840,6 +1024,23 @@ class CloudIQ():
         if(filter): params.update(filter)
         json = self.get(path, params)
         return json
+
+    
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
 
 
     def getCustomerTenant(self, tenantID):
@@ -870,6 +1071,23 @@ class CloudIQ():
         path = self.baseURL + 'CustomerTenants/' + str(tenantID) + '/detailed'
         json = self.get(path)
         return json
+
+    
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
 
 
     def getCustomerTenantAzurePlan(self, tenantID):
@@ -902,6 +1120,42 @@ class CloudIQ():
         return status_code
 
 
+                            ####FacebookOrders####
+
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
+
+                            ####GoogleOrders####
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
+
+
                             ####Groupings####
     def getGroupings(self, orgID, filter=None):
         """
@@ -919,6 +1173,23 @@ class CloudIQ():
         if(filter): params.update(filter)
         json = self.get(path, params)
         return json
+
+    
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
 
 
     def getGrouping(self, groupingID):
@@ -970,6 +1241,23 @@ class CloudIQ():
         if(filter): params.update(filter)
         json = self.get(path, params)
         return json
+
+    
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
 
     # Returning None. Bug?
     def getInvoiceProfile(self, invoiceProfileID):
@@ -1213,6 +1501,24 @@ class CloudIQ():
         return status_code
 
 
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
+
+
+    # DEPENDANT ON UNTESTED API METHOD
     def patchProductContainerRow(self, containerID, rowID, data):
         """
         Rename an Azure Subscription
@@ -1226,7 +1532,7 @@ class CloudIQ():
             json (dictionary): ProductContainer Resource
         """
         path = self.baseURL + "ProductContainers/" + str(containerID) + "/row/" + str(rowID)
-        json = self.patch(path,data)
+        json = self._patch(path,data)
         return json
 
 
@@ -1327,6 +1633,22 @@ class CloudIQ():
 
                             ####ResellerSalesPrices####
 
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
+
     def deleteResellerSalesPrices (self, objectID, filter=None):
         """
         Delete Reseller Sales Prices
@@ -1343,6 +1665,22 @@ class CloudIQ():
         path = self.baseURL + "ResellerSalesPrices"
         status_code = self.delete(path, params)
         return status_code
+
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
 
 
                             ####Secrets####
@@ -1396,6 +1734,126 @@ class CloudIQ():
         status_code = self.delete(path)
         return status_code
 
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
     
 
                             ####UsageCost####
@@ -1414,6 +1872,82 @@ class CloudIQ():
         response = self.get(path, filter)
         return response
 
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
+
 
                             ####Users####
     def getUsers(self, filter=None):
@@ -1429,6 +1963,23 @@ class CloudIQ():
         path = self.baseURL + 'Users'
         json = self.get(path, filter)
         return json
+
+    
+    '''
+    # post prototype
+    def create(self, schema):
+        """
+        Create a resource
+
+        Args:
+            schema (dictionary): required
+
+        Returns:
+            json: resource schema
+        """
+        path = f"{self.baseURL}"
+        return self.post(path, schema)
+    '''
 
 
     def getUser(self, UserID):
