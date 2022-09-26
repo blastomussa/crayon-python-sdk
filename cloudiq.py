@@ -29,7 +29,7 @@ class CloudIQ():
         self.client_secret = client_secret
         self.username = username
         self.password = password
-        self.baseURL = 'https://api.crayon.com/api/v1/'
+        self.baseURL = 'https://api.crayon.com/api/v1'
         self.tokenData = None
         self.unixTTL = None
 
@@ -46,14 +46,14 @@ class CloudIQ():
             tokenData (dictionary): Token json; includes AccessToken and ExpiresIn
                 https://apidocs.crayon.com/resources/Token.html
         """
-        tokenURL  = self.baseURL + 'connect/token'
+        tokenURL  = f"{self.baseURL}/connect/token"
         basic = HTTPBasicAuth(self.client_id,self.client_secret)
         header = {'Content-Type': 'application/x-www-form-urlencoded'}
         params = {
-            "grant_type": "password",
-            "username": self.username,
-            "password": self.password,
-            "scope": "CustomerApi"
+            'grant_type': 'password',
+            'username': self.username,
+            'password': self.password,
+            'scope': 'CustomerApi'
         }
         try:
             response = requests.post(tokenURL, auth=basic, headers=header, data=params)
@@ -69,7 +69,7 @@ class CloudIQ():
                     print(response)
                 exit(1)
             else:
-                print(str(response.status_code) + " Error.")
+                print(f"{response.status_code} Error")
                 try:
                     print(response.json())
                 except requests.exceptions.JSONDecodeError:
@@ -90,8 +90,7 @@ class CloudIQ():
         if(not self.tokenData):  #test for tokenData definition
             self.getToken()
         elif(self.unixTTL > (int(time()) - 600)): #test for expiration within 10 minutes
-            self.getToken()
-        
+            self.getToken()   
         return self.tokenData['AccessToken']
 
 
@@ -108,9 +107,8 @@ class CloudIQ():
         Returns:
             response.json (dictionary): resource schema 
         """
-        auth = 'Bearer ' + self.validateToken()
         header = {
-            'Authorization': auth,
+            'Authorization': f"Bearer {self.validateToken()}",
             'Accept': 'application/json',
             'Content-Type': 'application/json'
             }
@@ -119,7 +117,7 @@ class CloudIQ():
             if(int(response.status_code) == 200):
                 return response.json()
             else:
-                print(str(response.status_code) + " Error")
+                print(f"{response.status_code} Error")
                 try:
                     print(response.json())
                 except requests.exceptions.JSONDecodeError:
@@ -143,17 +141,19 @@ class CloudIQ():
          Returns:
             response.json (dictionary): resource schema 
         """
-        auth = 'Bearer ' + self.validateToken()
         header = {
-            'Authorization': auth,
+            'Authorization': f"Bearer {self.validateToken()}",
             'Content-Type': 'application/json'
             }
         try:
             response = requests.post(url=path, headers=header, json=data)
             if(int(response.status_code) == 200):
                 return response.json()
+            elif(int(response.status_code) == 500):
+                print(f"{response.status_code} Error. Check your schema definition.")
+                print(response.json())
             else:
-                print(str(response.status_code) + " Error")
+                print(f"{response.status_code} Error")
                 try:
                     print(response.json())
                 except requests.exceptions.JSONDecodeError:
@@ -179,9 +179,8 @@ class CloudIQ():
          Returns:
             response.json (dictionary): resource schema 
         """
-        auth = 'Bearer ' + self.validateToken()
         header = {
-            'Authorization': auth,
+            'Authorization': f"Bearer {self.validateToken()}",
             'Accept': 'application/json',
             'Content-Type': 'application/json-patch+json'
             }
@@ -190,7 +189,7 @@ class CloudIQ():
             if(int(response.status_code) == 200):
                 return response.json()
             else:
-                print(str(response.status_code) + " Error")
+                print(f"{response.status_code} Error")
                 try:
                     print(response.json())
                 except requests.exceptions.JSONDecodeError:
@@ -218,9 +217,8 @@ class CloudIQ():
          Returns:
             response.json (dictionary): resource schema 
         """
-        auth = 'Bearer ' + self.validateToken()
         header = {
-            'Authorization': auth,
+            'Authorization': f"Bearer {self.validateToken()}",
             'Accept': 'application/json',
             'Content-Type': 'application/json-patch+json'
             }
@@ -229,7 +227,7 @@ class CloudIQ():
             if(int(response.status_code) == 200):
                 return response.json()
             else:
-                print(str(response.status_code) + " Error")
+                print(f"{response.status_code} Error")
                 try:
                     print(response.json())
                 except requests.exceptions.JSONDecodeError:
@@ -241,7 +239,7 @@ class CloudIQ():
             exit(1)
 
 
-    # TESTED: Working. Should it return any data (api mostly retunrs boolean for delete) or just status code
+    # Should this return any data (api mostly returns boolean for delete) or just status code
     def delete(self, path, params=None):
         """
         Retrieves valid token, assembles Authorization Header and makes a DELETE
@@ -254,9 +252,8 @@ class CloudIQ():
         Returns:
             response.status_code (dictionary): JSON response to DELETE request
         """
-        auth = 'Bearer ' + self.validateToken()
         header = {
-            'Authorization': auth,
+            'Authorization': f"Bearer {self.validateToken()}",
             'Accept': '*/*',
             }
         try:
@@ -265,8 +262,7 @@ class CloudIQ():
 
         except requests.exceptions.ConnectionError:
             print("Connection Error. Please check your connection to the internet.")
-            exit(1)
-        
+            exit(1)        
 
 
     #----------------------------- API METHODS ---------------------------------
@@ -300,9 +296,8 @@ class CloudIQ():
         Returns:
             json (dictionary): Me Resource including username, userID, token and claims
         """
-        path = self.baseURL + 'Me'
-        json = self.get(path)
-        return json
+        path = f"{self.baseURL}/Me"
+        return self.get(path)
 
 
                               ####Activity Logs####
@@ -318,11 +313,10 @@ class CloudIQ():
         Returns:
             json (dictionary): Activity Log Item Resource
         """
-        path = self.baseURL + 'ActivityLogs'
-        params = {"Id": entityID}
+        path = f"{self.baseURL}/ActivityLogs"
+        params = {'Id': entityID}
         if(filter): params.update(filter)
-        json = self.get(path, params)
-        return json
+        return self.get(path, params)       
 
 
                               ####Addresses####
@@ -338,9 +332,8 @@ class CloudIQ():
         Returns:
             json (dictionary): Address Resources
         """
-        path = self.baseURL + 'organizations/' + str(orgID) + '/Addresses'
-        json = self.get(path, filter)
-        return json
+        path = f"{self.baseURL}/organizations/{orgID}/Addresses"
+        return self.get(path, filter)       
 
 
     # 'ErrorCode': '500 InternalServerError', 'Message': "Ops. Something broke'
@@ -356,9 +349,8 @@ class CloudIQ():
         Returns:
             json (dictionary):
         """
-        path = self.baseURL + 'organizations/' + str(orgID) + '/Addresses/' + str(addressID)
-        json = self.get(path, filter)
-        return json
+        path = f"{self.baseURL}/organizations/{orgID}/Addresses/{addressID}"
+        return self.get(path, filter)
 
 
                               ####AgreementProducts####
@@ -377,11 +369,10 @@ class CloudIQ():
         Returns:
             json (dictionary): AgreementProductCollection Resource
         """
-        path = self.baseURL + 'AgreementProducts'
+        path = f"{self.baseURL}/AgreementProducts"
         params = {'OrganizationId': orgID}
         if(filter): params.update(filter)
-        json = self.get(path, params)
-        return json
+        return self.get(path, params)
 
 
     # 'ErrorCode': '500 InternalServerError', 'Message': "Ops. Something broke'
@@ -396,9 +387,8 @@ class CloudIQ():
         Returns:
             json (dictionary): BillingCycleEnum Resource
         """
-        path = self.baseURL + 'AgreementProducts/'+ str(partNumber)+ '/supportedbillingcycles'
-        json = self.get(path, params=filter)
-        return json
+        path = f"{self.baseURL}/AgreementProducts/{partNumber}/supportedbillingcycles"
+        return self.get(path, params=filter)
 
     
     '''
@@ -445,9 +435,8 @@ class CloudIQ():
         Returns:
             json (dictionary): Agreement Resource
         """
-        path = self.baseURL + 'Agreements'
-        json = self.get(path, filter)
-        return json
+        path = f"{self.baseURL}/Agreements"
+        return self.get(path, filter)
 
 
                               ####AgreementReports####
@@ -461,9 +450,8 @@ class CloudIQ():
         Returns:
             json (dictionary): Agreement Report Resource
         """
-        path = self.baseURL + 'AgreementReports/' + str(productContainerId)
-        json = self.get(path)
-        return json
+        path = f"{self.baseURL}/AgreementReports/{productContainerId}"
+        return self.get(path)
 
 
                               ####Assets####
@@ -477,9 +465,8 @@ class CloudIQ():
         Returns:
             status code (int): 200 success
         """
-        path = self.baseURL + "Assets/" + str(assetID) + "/tags"
-        status_code = self.delete(path)
-        return status_code
+        path = f"{self.baseURL}/Assets/{assetID}/tags"
+        return self.delete(path)
 
 
     '''
@@ -548,9 +535,8 @@ class CloudIQ():
             json (dict): Azure plan resource schema
 
         """
-        path = self.baseURL + "AzurePlans/" + str(azurePlanID)
-        json = self.get(path)
-        return json
+        path = f"{self.baseURL}/AzurePlans/{azurePlanID}"
+        return self.get(path)
 
 
     def getAzureSubscriptions(self, azurePlanID, filter=None):
@@ -565,9 +551,8 @@ class CloudIQ():
             json (dict): Azure Subscription resource schema
 
         """
-        path = self.baseURL + "AzurePlans/" + str(azurePlanID) + "/azureSubscriptions"
-        json = self.get(path,filter)
-        return json
+        path = f"{self.baseURL}/AzurePlans/{azurePlanID}/azureSubscriptions"
+        return self.get(path,filter)
 
 
     '''
@@ -632,11 +617,8 @@ class CloudIQ():
         Returns:
             json (dictionary): AzureSubscriptionUpdated Resource
         """
-        path = self.baseURL + "AzurePlans/" + str(azurePlanID) + "/azureSubscriptions/" + str(subscriptionID) + "/rename"
-        json = self._patch(path,data)
-        return json
-
-
+        path = f"{self.baseURL}/AzurePlans/{azurePlanID}/azureSubscriptions/{subscriptionID}/rename"
+        return self._patch(path,data)
 
 
                               ####Billing Cycles####
@@ -650,10 +632,9 @@ class CloudIQ():
         Returns:
             json (dictionary): BillingCycle Resource
         """
-        path = self.baseURL + 'BillingCycles'
+        path = f"{self.baseURL}/BillingCycles"
         params = {'includeUnknown': includeUnknown}
-        json = self.get(path, params)
-        return json
+        return self.get(path, params)
 
 
     def getProductVariantBillingCycles(self, productVariantId):
@@ -666,10 +647,9 @@ class CloudIQ():
         Returns:
             json (dictionary): BillingCycle Resource
         """
-        path = self.baseURL + 'BillingCycles/productVariant/' + str(productVariantId)
-        json = self.get(path)
-        return json
-
+        path = f"{self.baseURL}/BillingCycles/productVariant/{productVariantId}"
+        return self.get(path)
+        
 
     def getBillingCyclesNameDictionary(self):
         """
@@ -678,9 +658,8 @@ class CloudIQ():
         Returns:
             json (dictionary): Billing Cycle Name Dictionary
         """
-        path = self.baseURL + 'BillingCycles/cspNameDictionary'
-        json = self.get(path)
-        return json
+        path = f"{self.baseURL}/BillingCycles/cspNameDictionary"
+        return self.get(path)
 
 
                         ####Billing Statements####
@@ -695,11 +674,10 @@ class CloudIQ():
         Returns:
             json (dictionary): BillingStatement Resource
         """
-        path = self.baseURL + 'BillingStatements'
+        path = f"{self.baseURL}/BillingStatements"
         params = {'OrganizationId': orgID}
         if(filter): params.update(filter)
-        json = self.get(path, params)
-        return json
+        return self.get(path, params)
 
 
     def getGroupedBillingStatements(self, orgID, filter=None):
@@ -713,12 +691,11 @@ class CloudIQ():
         Returns:
             json (dictionary): GroupedBillingStatement Resource
         """
-        path = self.baseURL + 'BillingStatements/grouped'
+        path = f"{self.baseURL}/BillingStatements/grouped"
         params = {'OrganizationId': orgID}
         if(filter): params.update(filter)
-        json = self.get(path, params)
-        return json
-
+        return self.get(path, params)
+        
 
     def getBillingStatementExcel(self, statementID):
         """
@@ -730,10 +707,9 @@ class CloudIQ():
         Returns:
             json (dictionary): byte array of excel file
         """
-        path = self.baseURL + 'BillingStatements/file/' + str(statementID)
-        json = self.get(path)
-        return json
-
+        path = f"{self.baseURL}/BillingStatements/file/{statementID}"
+        return self.get(path)
+        
 
     def getBillingStatementCSV(self, statementID):
         """
@@ -745,9 +721,8 @@ class CloudIQ():
         Returns:
             json (dictionary): byte array of CSV file
         """
-        path = self.baseURL + 'BillingStatements/' + str(statementID) + '/reconciliationfile'
-        json = self.get(path)
-        return json
+        path = f"{self.baseURL}/BillingStatements/{statementID}/reconciliationfile"
+        return self.get(path)    
 
 
     def getBillingStatementJSON(self, statementID):
@@ -760,10 +735,9 @@ class CloudIQ():
         Returns:
             json (dictionary): byte array of JSON file
         """
-        path = self.baseURL + 'BillingStatements/' + str(statementID) + '/billingrecordsfile'
-        json = self.get(path)
-        return json
-
+        path = f"{self.baseURL}/BillingStatements/{statementID}/billingrecordsfile"
+        return self.get(path)
+        
 
                             ####Blog Items####
     def getBlogItems(self, filter=None):
@@ -776,10 +750,9 @@ class CloudIQ():
         Returns:
             json (dictionary): BlogItem Resource
         """
-        path = self.baseURL + 'BlogItems'
-        json = self.get(path, filter)
-        return json
-
+        path = f"{self.baseURL}/BlogItems"
+        return self.get(path, filter)
+        
 
                             ####Clients####
     def getClients(self, filter=None):
@@ -792,9 +765,8 @@ class CloudIQ():
         Returns:
             json (dictionary): list of Client Resources
         """
-        path = self.baseURL + 'Clients'
-        json = self.get(path, filter)
-        return json
+        path = f"{self.baseURL}/Clients"
+        return self.get(path, filter)     
 
 
     def getClient(self, clientID):
@@ -807,10 +779,9 @@ class CloudIQ():
         Returns:
             json (dictionary): Client Resource
         """
-        path = self.baseURL + 'Clients/' + str(clientID)
-        json = self.get(path)
-        return json
-
+        path = f"{self.baseURL}/Clients/{clientID}"
+        return self.get(path)
+        
 
     def deleteClient (self, clientID):
         """
@@ -822,7 +793,7 @@ class CloudIQ():
         Returns:
             status code (int): 200 success
         """
-        path = self.baseURL + "Clients/" + str(clientID)
+        path = f"{self.baseURL}/Clients/{clientID}"
         status_code = self.delete(path)
         return status_code
 
@@ -837,21 +808,18 @@ class CloudIQ():
         Returns:
             json (dictionary): Client Schema
         """
-        path = self.baseURL + "Clients"
-        json = self.post(path, schema)
-        return json
+        path = f"{self.baseURL}/Clients"
+        return self.post(path, schema)     
 
 
     # NOT WORKING; MIGHT BE SCHEMA MIGHT BE SOMETHING ELSE 405 error
     def updateClient(self, clientID, schema):
         """
         """
-        path = self.baseURL + "Clients/" + str(clientID)
+        path = f"{self.baseURL}/Clients/{clientID}"
         print(schema)
-        json = self._put(path, schema)
-        return json
-
-
+        return self._put(path, schema)
+        
 
                             ####Consumers####
     def getConsumers(self, orgID, filter=None):
@@ -865,12 +833,11 @@ class CloudIQ():
         Returns:
             json (dictionary): list of Consumer Resources
         """
-        path = self.baseURL + 'Consumers'
+        path = f"{self.baseURL}/Consumers"
         params = {'OrganizationId': orgID}
         if(filter): params.update(filter)
-        json = self.get(path, params)
-        return json
-
+        return self.get(path, params)
+        
 
     def getConsumer(self, consumerID):
         """
@@ -882,10 +849,9 @@ class CloudIQ():
         Returns:
             json (dictionary): Consumer Resource
         """
-        path = self.baseURL + 'Consumers/' + str(consumerID)
-        json = self.get(path)
-        return json
-
+        path = f"{self.baseURL}/Consumers/{consumerID}"
+        return self.get(path)
+        
     
     '''
     # post prototype
@@ -914,10 +880,9 @@ class CloudIQ():
         Returns:
             status code (int): 200 success
         """
-        path = self.baseURL + "Consumers/" + str(consumerID)
+        path = f"{self.baseURL}/Consumers/{consumerID}"
         status_code = self.delete(path)
         return status_code
-
 
 
                             ####CrayonAccounts####
@@ -932,11 +897,10 @@ class CloudIQ():
         Returns:
             json (dictionary): list of CrayonAccount Resources
         """
-        path = self.baseURL + 'CrayonAccounts'
+        path = f"{self.baseURL}/CrayonAccounts"
         params = {'OrganizationId': orgID}
         if(filter): params.update(filter)
-        json = self.get(path, params)
-        return json
+        return self.get(path, params)    
 
 
     '''
@@ -966,10 +930,9 @@ class CloudIQ():
         Returns:
             json (dictionary): CrayonAccount Resource
         """
-        path = self.baseURL + 'CrayonAccounts/' + str(accountID)
-        json = self.get(path)
-        return json
-
+        path = f"{self.baseURL}/CrayonAccounts/{accountID}"
+        return self.get(path)
+        
 
                         ####CustomerTenantsAgreements####
     def getCustomerTenantAgreements(self, tenantID, AgreementTypeConsent):
@@ -983,11 +946,10 @@ class CloudIQ():
         Returns:
             json (dictionary): ServiceAccountAgreement Resource
         """
-        path = self.baseURL + 'CustomerTenants/' + str(tenantID) + '/Agreements'
+        path = f"{self.baseURL}/CustomerTenants/{tenantID}/Agreements"
         params = {'AgreementTypeConsent': AgreementTypeConsent}
-        json = self.get(path, params)
-        return json
-
+        return self.get(path, params)
+        
 
     '''
     # post prototype
@@ -1006,7 +968,6 @@ class CloudIQ():
     '''
 
 
-
                             ####CustomerTenants####
     def getCustomerTenants(self, orgID, filter=None):
         """
@@ -1019,11 +980,11 @@ class CloudIQ():
         Returns:
             json (dictionary): List of CustomerTenant Resources
         """
-        path = self.baseURL + 'CustomerTenants'
+        path = f"{self.baseURL}/CustomerTenants"
         params = {'OrganizationId': orgID}
         if(filter): params.update(filter)
-        json = self.get(path, params)
-        return json
+        return self.get(path, params)
+        
 
     
     '''
@@ -1053,9 +1014,9 @@ class CloudIQ():
         Returns:
             json (dictionary): CustomerTenant Resource
         """
-        path = self.baseURL + 'CustomerTenants/' + str(tenantID)
-        json = self.get(path)
-        return json
+        path = f"{self.baseURL}/CustomerTenants/{tenantID}"
+        return self.get(path)
+        
 
 
     def getCustomerTenantDetails(self, tenantID):
@@ -1068,9 +1029,9 @@ class CloudIQ():
         Returns:
             json (dictionary): CustomerTenantDetailed Resource
         """
-        path = self.baseURL + 'CustomerTenants/' + str(tenantID) + '/detailed'
-        json = self.get(path)
-        return json
+        path = f"{self.baseURL}/CustomerTenants/{tenantID}/detailed"
+        return self.get(path)
+        
 
     
     '''
@@ -1100,9 +1061,9 @@ class CloudIQ():
         Returns:
             json (dictionary): AzurePlan Resource
         """
-        path = self.baseURL + 'CustomerTenants/' + str(tenantID) + '/AzurePlan'
-        json = self.get(path)
-        return json
+        path = f"{self.baseURL}/CustomerTenants/{tenantID}/AzurePlan"
+        return self.get(path)
+        
 
 
     def deleteCustomerTenant (self, tenantID):
@@ -1115,7 +1076,7 @@ class CloudIQ():
         Returns:
             status code (int): 200 success
         """
-        path = self.baseURL + "CustomerTenants/" + str(tenantID)
+        path = f"{self.baseURL}/CustomerTenants/{tenantID}"
         status_code = self.delete(path)
         return status_code
 
@@ -1168,11 +1129,11 @@ class CloudIQ():
         Returns:
             json (dictionary): List of Grouping Resources
         """
-        path = self.baseURL + 'Groupings'
+        path = f"{self.baseURL}/Groupings"
         params = {'OrganizationId': orgID}
         if(filter): params.update(filter)
-        json = self.get(path, params)
-        return json
+        return self.get(path, params)
+        
 
     
     '''
@@ -1202,9 +1163,9 @@ class CloudIQ():
         Returns:
             json (dictionary): Grouping Resource
         """
-        path = self.baseURL + 'Groupings/' + str(groupingID)
-        json = self.get(path)
-        return json
+        path = f"{self.baseURL}/Groupings/{groupingID}"
+        return self.get(path)
+        
 
 
  
@@ -1218,7 +1179,7 @@ class CloudIQ():
         Returns:
             status code (int): 200 success
         """
-        path = self.baseURL + "Groupings/" + str(groupingID)
+        path = f"{self.baseURL}/Groupings/{groupingID}"
         status_code = self.delete(path)
         return status_code
 
@@ -1236,11 +1197,11 @@ class CloudIQ():
         Returns:
             json (dictionary): List of InvoiceProfile Resources
         """
-        path = self.baseURL + 'InvoiceProfiles'
+        path = f"{self.baseURL}/InvoiceProfiles"
         params = {'OrganizationId': orgID}
         if(filter): params.update(filter)
-        json = self.get(path, params)
-        return json
+        return self.get(path, params)
+        
 
     
     '''
@@ -1270,8 +1231,8 @@ class CloudIQ():
         Returns:
             json (dictionary): InvoiceProfile Resource
         """
-        path = self.baseURL + 'InvoiceProfiles/' + str(invoiceProfileID)
-        json = self.get(path)
+        path = f"{self.baseURL}/InvoiceProfiles/{invoiceProfileID}"
+        return self.get(path)
 
 
     def deleteInvoiceProfile(self, invoiceprofileID):
@@ -1284,7 +1245,7 @@ class CloudIQ():
         Returns:
             status code (int): 200 success
         """
-        path = self.baseURL + "InvoiceProfiles/" + str(invoiceprofileID)
+        path = f"{self.baseURL}/InvoiceProfiles/{invoiceprofileID}"
         status_code = self.delete(path)
         return status_code
 
@@ -1302,9 +1263,9 @@ class CloudIQ():
         Returns:
             json (dictionary): List of ManagementLinks Resources
         """
-        path = self.baseURL + 'ManagementLinks'
-        json = self.get(path, filter)
-        return json
+        path = f"{self.baseURL}/ManagementLinks"
+        return self.get(path, filter)
+        
 
 
     # 403 Forbidden Error message
@@ -1318,9 +1279,9 @@ class CloudIQ():
         Returns:
             json (dictionary): List of ManagementLinkGrouped Resources
         """
-        path = self.baseURL + 'ManagementLinks/grouped'
-        json = self.get(path, filter)
-        return json
+        path = f"{self.baseURL}/ManagementLinks/grouped"
+        return self.get(path, filter)
+        
 
 
                             ####OrganizationAccess####
@@ -1335,9 +1296,9 @@ class CloudIQ():
         Returns:
             json (dictionary): OrganizationAccess Resource
         """
-        path = self.baseURL + 'OrganizationAccess/grant'
-        json = self.get(path, filter)
-        return json
+        path = f"{self.baseURL}/OrganizationAccess/grant"
+        return self.get(path, filter)
+        
 
 
     # 'ErrorCode': '401 Unauthorized', 'Message': 'Invalid token'???
@@ -1351,9 +1312,9 @@ class CloudIQ():
         Returns:
             json (dictionary): OrganizationAccess Resource
         """
-        path = self.baseURL + 'OrganizationAccess'
-        json = self.get(path, filter)
-        return json
+        path = f"{self.baseURL}/OrganizationAccess"
+        return self.get(path, filter)
+        
 
 
                             ####Organizations####
@@ -1369,9 +1330,9 @@ class CloudIQ():
             json (dictionary): OrganizationCollection Resource
                 https://apidocs.crayon.com/resources/OrganizationCollection.html
         """
-        path = self.baseURL + 'Organizations'
-        json = self.get(path, filter)
-        return json
+        path = f"{self.baseURL}/Organizations"
+        return self.get(path, filter)
+        
 
 
     def getOrganization(self, orgID):
@@ -1386,9 +1347,9 @@ class CloudIQ():
             json (dictionary): Organization Resource
                 https://apidocs.crayon.com/resources/Organization.html
         """
-        path = self.baseURL + 'Organizations/' + str(orgID)
-        json = self.get(path)
-        return json
+        path = f"{self.baseURL}/Organizations/{orgID}"
+        return self.get(path)
+        
 
 
     def getOrganizationSalesContact(self, orgID):
@@ -1401,9 +1362,9 @@ class CloudIQ():
         Returns:
             json (dictionary): OrganizationSalesContact Resource
         """
-        path = self.baseURL + 'Organizations/' + str(orgID) + "/salescontact"
-        json = self.get(path)
-        return json
+        path = f"{self.baseURL}/Organizations/{orgID}/salescontact"
+        return self.get(path)
+        
 
 
     def getOrganizationHasAccess(self, orgID):
@@ -1416,7 +1377,7 @@ class CloudIQ():
         Returns:
             access (boolean): True or False
         """
-        path = self.baseURL + "Organizations/HasAccess/" + str(orgID)
+        path = f"{self.baseURL}/Organizations/HasAccess/{orgID}"
         access = self.get(path)
         return access
 
@@ -1433,12 +1394,11 @@ class CloudIQ():
         Returns:
             json (dictionary): List of ProductContainer Resources
         """
-        path = self.baseURL + 'ProductContainers'
+        path = f"{self.baseURL}/ProductContainers"
         params = {'OrganizationId': orgID}
         if(filter): params.update(filter)
-        json = self.get(path, params)
-        return json
-
+        return self.get(path, params)
+        
 
     def getProductContainer(self, productContainerID):
         """
@@ -1450,7 +1410,7 @@ class CloudIQ():
         Returns:
             json (dictionary): ProductContainer Resource
         """
-        path = self.baseURL + "ProductContainers/" + str(productContainerID)
+        path = f"{self.baseURL}/ProductContainers/{productContainerID}"
         response = self.get(path)
         return response
 
@@ -1465,7 +1425,7 @@ class CloudIQ():
         Returns:
             json (dictionary): ProductContainer Resource
         """
-        path = self.baseURL + "ProductContainers/rowissues/" + str(productContainerID)
+        path = f"{self.baseURL}/ProductContainers/rowissues/{productContainerID}"
         response = self.get(path)
         return response
 
@@ -1480,7 +1440,7 @@ class CloudIQ():
         Returns:
             json (dictionary): ProductContainer Resource
         """
-        path = self.baseURL + "ProductContainers/getorcreateshoppingcart"
+        path = f"{self.baseURL}/ProductContainers/getorcreateshoppingcart"
         params = {'OrganizationId': orgID}
         response = self.get(path, params)
         return response
@@ -1496,7 +1456,7 @@ class CloudIQ():
         Returns:
             status code (int): 200 success
         """
-        path = self.baseURL + "ProductContainers/" + str(productcontainerID)
+        path = f"{self.baseURL}/ProductContainers/{productcontainerID}"
         status_code = self.delete(path)
         return status_code
 
@@ -1531,10 +1491,8 @@ class CloudIQ():
         Returns:
             json (dictionary): ProductContainer Resource
         """
-        path = self.baseURL + "ProductContainers/" + str(containerID) + "/row/" + str(rowID)
-        json = self._patch(path,data)
-        return json
-
+        path = f"{self.baseURL}/ProductContainers/{containerID}/row/{rowID}"
+        return self._patch(path,data)
 
 
                             ####Programs####
@@ -1548,10 +1506,9 @@ class CloudIQ():
         Returns:
             json (dictionary): List of Program Resources
         """
-        path = self.baseURL + 'Programs'
-        json = self.get(path, filter)
-        return json
-
+        path = f"{self.baseURL}/Programs"
+        return self.get(path, filter)
+        
 
     def getProgram(self, programID):
         """
@@ -1563,7 +1520,7 @@ class CloudIQ():
         Returns:
             json (dictionary): Program Resource
         """
-        path = self.baseURL + "Programs/" + str(programID)
+        path = f"{self.baseURL}/Programs/{programID}"
         response = self.get(path)
         return response
 
@@ -1579,9 +1536,9 @@ class CloudIQ():
         Returns:
             json (dictionary): List of publisher Resources
         """
-        path = self.baseURL + 'publishers'
-        json = self.get(path, filter)
-        return json
+        path = f"{self.baseURL}/publishers"
+        return self.get(path, filter)
+        
 
 
     def getPublisher(self, publisherID):
@@ -1594,7 +1551,7 @@ class CloudIQ():
         Returns:
             json (dictionary): publisher Resource
         """
-        path = self.baseURL + "publishers/" + str(publisherID)
+        path = f"{self.baseURL}/publishers/{publisherID}"
         response = self.get(path)
         return response
 
@@ -1610,10 +1567,9 @@ class CloudIQ():
         Returns:
             json (dictionary): List of Region Resources
         """
-        path = self.baseURL + 'Regions'
-        json = self.get(path, filter)
-        return json
-
+        path = f"{self.baseURL}/Regions"
+        return self.get(path, filter)
+        
 
     def getRegionByCode(self, regionCode):
         """
@@ -1625,7 +1581,7 @@ class CloudIQ():
         Returns:
             json (dictionary): Region Resource
         """
-        path = self.baseURL + "Regions/bycode"
+        path = f"{self.baseURL}/Regions/bycode"
         params = {'regionCode': regionCode}
         response = self.get(path, params)
         return response
@@ -1662,7 +1618,7 @@ class CloudIQ():
         """
         params  = {"objectID": objectID}
         if(filter): params.update(filter)
-        path = self.baseURL + "ResellerSalesPrices"
+        path = f"{self.baseURL}/ResellerSalesPrices"
         status_code = self.delete(path, params)
         return status_code
 
@@ -1682,7 +1638,6 @@ class CloudIQ():
         return self.post(path, schema)
     '''
 
-
                             ####Secrets####
     def createSecret(self, schema):
         """
@@ -1694,9 +1649,9 @@ class CloudIQ():
         Returns:
             json (dictionary): Secret Schema
         """
-        path = self.baseURL + "Secrets"
-        json = self.post(path, schema)
-        return json
+        path = f"{self.baseURL}/Secrets"
+        return self.post(path, schema)
+        
 
  
     def deleteSecret (self, clientID, secretID):
@@ -1710,10 +1665,10 @@ class CloudIQ():
         Returns:
             status code (int): 200 success
         """
-        path = self.baseURL + "Secrets"
+        path = f"{self.baseURL}/Secrets"
         params = {
-            "clientID": clientID,
-            "secretID": secretID
+            'clientID': clientID,
+            'secretID': secretID
         }
         status_code = self.delete(path, params)
         return status_code
@@ -1730,7 +1685,7 @@ class CloudIQ():
         Returns:
             status code (int): 200 success
         """
-        path = self.baseURL + "Subscriptions/" + str(subscriptionID) +"/tags"
+        path = f"{self.baseURL}/Subscriptions/{subscriptionID}/tags"
         status_code = self.delete(path)
         return status_code
 
@@ -1868,7 +1823,7 @@ class CloudIQ():
         Returns:
             json (dictionary): OrganizationUsageCost Resource
         """
-        path = self.baseURL + "UsageCost/organization/" + str(orgID)
+        path = f"{self.baseURL}/UsageCost/organization/{orgID}"
         response = self.get(path, filter)
         return response
 
@@ -1960,9 +1915,9 @@ class CloudIQ():
         Returns:
             json (dictionary): List of User Resources
         """
-        path = self.baseURL + 'Users'
-        json = self.get(path, filter)
-        return json
+        path = f"{self.baseURL}/Users"
+        return self.get(path, filter)
+        
 
     
     '''
@@ -1992,7 +1947,7 @@ class CloudIQ():
         Returns:
             json (dictionary): User Resource
         """
-        path = self.baseURL + "Users/" + str(UserID)
+        path = f"{self.baseURL}/Users/{UserID}"
         response = self.get(path)
         return response
 
@@ -2007,7 +1962,7 @@ class CloudIQ():
         Returns:
             json (dictionary): User Resource
         """
-        path = self.baseURL + "Users/user"
+        path = f"{self.baseURL}/Users/user"
         params = {'userName': username}
         response = self.get(path, params)
         return response
@@ -2023,8 +1978,6 @@ class CloudIQ():
         Returns:
             status code (int): 200 success
         """
-        path = self.baseURL + "Users/" + str(userID)
+        path = f"{self.baseURL}/Users/{userID}"
         status_code = self.delete(path)
         return status_code
-
-    
