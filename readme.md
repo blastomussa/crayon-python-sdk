@@ -4,7 +4,7 @@ This project is an SDK for Crayon's CloudIQ API that can be used in Python
 scripts and applications. Provides a simple interface for individuals who are
 inexperienced in C# to test Cloud IQ API calls with Python.
 
-**Use at your own risk. Only use POST, PUT, PATCH and DELETE methods if you understand the consequense, PUT and PATCH are completely untested.**
+**Use at your own risk. Only use POST, PUT, PATCH and DELETE methods if you understand the consequenses**
 
 MIT License: https://github.com/blastomussa/crayon-python-sdk/blob/master/LICENSE 
 

@@ -165,9 +165,8 @@ class CloudIQ():
             exit(1)
 
 
-    # UNTESTED; not working correctly 405 with PUT client
     # TEST WITH: /api/v1/Clients/{clientID}
-    def _put(self, path, data):
+    def put(self, path, data):
         """
         Retrieves valid token, assembles Authorization Header and makes a PUT
         request to a specified endpoint.
@@ -182,7 +181,7 @@ class CloudIQ():
         header = {
             'Authorization': f"Bearer {self.validateToken()}",
             'Accept': 'application/json',
-            'Content-Type': 'application/json-patch+json'
+            'Content-Type': 'application/json'
             }
         try:
             response = requests.post(url=path, headers=header, json=data)
@@ -201,10 +200,9 @@ class CloudIQ():
             exit(1)
 
 
-    # UNTESTED
     # test with Azure subscription rename
     # Check Content type in header
-    def _patch(self, path, data):
+    def patch(self, path, data):
         """
         Retrieves valid token, assembles Authorization Header and makes a PATCH
         request to a specified endpoint. Only used for two operations: renaming 
@@ -220,7 +218,7 @@ class CloudIQ():
         header = {
             'Authorization': f"Bearer {self.validateToken()}",
             'Accept': 'application/json',
-            'Content-Type': 'application/json-patch+json'
+            'Content-Type': 'application/json'
             }
         try:
             response = requests.patch(url=path, headers=header, json=data)
@@ -274,7 +272,7 @@ class CloudIQ():
             json (dictionary): Version and Environment Information
         """
         try:
-            url = f"{self.baseURL}ping"
+            url = f"{self.baseURL}/ping"
             header = {'accept': '*/*'}
             response = requests.get(url, headers=header)
             if(int(response.status_code) == 200):
