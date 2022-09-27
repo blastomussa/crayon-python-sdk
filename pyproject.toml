@@ -1,0 +1,30 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/cloudiq"]
+
+[tool.hatch.build]
+exclude = [
+  "Examples",
+]
+
+[project]
+name = "cloudiq-blastomussa"
+version = "0.0.3"
+authors = [
+  { name="Joe Courtney", email="jccourtn@gmail.com" },
+]
+description = "Crayon CloudIQ SDK"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/blastomussa/crayon-python-sdk"
+"Bug Tracker" = "https://github.com/blastomussa/crayon-python-sdk/issues"

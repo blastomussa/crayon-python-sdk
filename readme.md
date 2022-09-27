@@ -2,9 +2,10 @@
 
 This project is an SDK for Crayon's CloudIQ API that can be used in Python
 scripts and applications. Provides a simple interface for individuals who are
-inexperienced in C# to test Cloud IQ API calls with Python.
+inexperienced in C# to test Cloud IQ API calls with Python. The goal is to make
+this package available on PyPi via pip.
 
-**Use at your own risk. Only use POST, PUT, PATCH and DELETE methods if you understand the consequense, PUT and PATCH are completely untested.**
+**Use at your own risk. Only use POST, PUT, PATCH and DELETE methods if you understand the consequenses**
 
 MIT License: https://github.com/blastomussa/crayon-python-sdk/blob/master/LICENSE 
 
@@ -71,72 +72,8 @@ user and **save the file as config.ini.**
 python3 example-products.py
 ```
 
-## Methods currently implemented in CloudIQ class
 
-1. get()
-2. ping()
-3. me()
-4. getToken()
-5. validateToken()
-6. getOrganizations()
-7. getOrganization()
-8. getOrganizationSalesContact()
-9. getAgreementProducts()
-10. getActivityLogs()
-11. getOrganizationHasAccess()
-12. getAddresses()
-13. getAddress()
-14. getSupportedBillingCycles()
-15. getAgreements()
-16. getAgreementReports()
-17. getCustomerTenants()
-18. getCustomerTenant()
-19. getCustomerTenantDetails()
-20. getCustomerTenantAzurePlan()
-21. getCustomerTenantAgreements()
-22. getBillingCycles()
-23. getProductVariantBillingCycles()
-24. getBillingCyclesNameDictionary()
-25. getBillingStatements()
-26. getGroupedBillingStatements()
-27. getBillingStatementExcel()
-28. getBillingStatementCSV()
-29. getBillingStatementJSON()
-30. getBlogItems()
-31. getClients()
-32. getClient()
-33. getConsumers()
-34. getConsumer()
-35. getCrayonAccounts()
-36. getCrayonAccount()
-37. getGroupings()
-38. getGrouping()
-39. getInvoiceProfiles()
-40. getInvoiceProfile()
-41. getProductContainers()
-42. getProductContainer()
-43. getProductContainerRowIssues()
-44. getProductContainerShoppingCart()
-45. getPrograms()
-46. getProgram()
-47. getPublishers()
-48. getPublisher()
-49. getRegions()
-50. getRegionByCode()
-51. getUsers()
-52. getUser()
-53. getUsername()
-54. getUsageCost()
-55. delete()
-56. patch() 
-57. post()
-58. put()
-59. createClient()
-60. deleteClient()
-
-
-
-##  How to retrieve detailed Docstring information on CloudIQ class
+##  How to retrieve detailed Docstring information on methods within the CloudIQ class
 
 ```
 from cloudiq import CloudIQ
