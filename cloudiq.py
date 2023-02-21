@@ -3,6 +3,7 @@
 import requests
 from time import time
 from requests.auth import HTTPBasicAuth
+from time import strftime
 
 class CloudIQ():
     """
