@@ -1979,3 +1979,151 @@ class CloudIQ():
         path = f"{self.baseURL}/Users/{userID}"
         status_code = self.delete(path)
         return status_code
+
+   
+    def create_tenant(self, data):
+        """
+        Create a CSP tenant through the Cloud-IQ API
+        Args: 
+            data (dictionary): CustomerTenantDetailed Schema; null unknown/non-required fields
+                Required Fields: https://apidocs.crayon.com/scenarios/customertenant-create.html
+                Schema: https://apidocs.crayon.com/resources/CustomerTenantDetailed.html
+        Returns:
+            json (dictionary): CustomerTenantDetailed Schema
+        """
+        path = f"{self.baseURL}/CustomerTenants"
+        return self.post(path, data)  
+
+
+    def create_subscription(self, data):
+        """
+        Create a subscriptions for a product(license)
+        Args: 
+            data (dictionary): SubscriptionDetailed Schema; null unknown/non-required fields
+                Required fields: https://apidocs.crayon.com/scenarios/subscription-create.html 
+                Schema: https://apidocs.crayon.com/resources/SubscriptionDetailed.html
+        Returns:
+            json (dictionary): SubscriptionDetailed Schema
+        """
+        path = f"{self.baseURL}/Subscriptions"
+        return self.post(path, data) 
+
+
+    def create_tenantagreement(self, customerTenantId, data):
+        """
+        Create a Microsoft Consent Agreement for tenant
+        Args: 
+            data (dictionary): ServiceAccountAgreement Schema
+        Returns:
+            json (dictionary): ServiceAccountAgreement Schema
+        """
+        path = f"{self.baseURL}/customertenants/{customerTenantId}/agreements"
+        return self.post(path, data) 
+
+
+    #----------------------------- API SCHEMA ---------------------------------
+    class CustomerTenantDetailed():
+        """
+        """
+        def __init__(
+            self,
+            tenant_name,
+            domain_prefix,
+            org_id,
+            invoice_profile_id, 
+            contact_firstname,
+            contact_lastname,
+            contact_email,
+            contact_phone,
+            address_firstname,
+            address_lastname,
+            address_address,
+            address_city,
+            address_countrycode,
+            address_region,
+            address_zipcode,
+            username=None,
+            invoice_profile_name="Default", 
+            tenant_type=1, 
+            org_name=None,
+            org_reg_number=None,
+        ):
+            self.tenant = {
+                "Tenant": {
+                    "Name": tenant_name,
+                        "Publisher": {              
+                            "Id": 2, 
+                            "Name": "Microsoft"
+                        },
+                        "DomainPrefix": domain_prefix,
+                        "Organization": {
+                            "Id": org_id,             
+                            "Name": org_name, 
+                            "ParentId": 0
+                        },
+                        "InvoiceProfile": {
+                            "Id": invoice_profile_id,             
+                            "Name": invoice_profile_name     
+                        },
+                        "CustomerTenantType": tenant_type,  # T1=1, T2=2; All tenants will be T1 for this project according to Matt Clayton
+                    },
+                "Profile": {
+                    "Contact": {
+                        "FirstName": contact_firstname,
+                        "LastName": contact_lastname,
+                        "Email": contact_email,
+                        "PhoneNumber": contact_phone
+                    },
+                    "Address": {
+                        "FirstName": address_firstname,
+                        "LastName": address_lastname,
+                        "AddressLine1": address_address,
+                        "City": address_city,
+                        "CountryCode": address_countrycode,
+                        "CountryName": None,
+                        "Region": address_region,
+                        "PostalCode": address_zipcode,
+                    },
+                },
+                "Company": {
+                    "OrganizationRegistrationNumber": org_reg_number   #null??
+                },
+                "User": {
+                    "UserName": username,
+                }
+            }
+
+
+    class CustomerTenantAgreement():
+        """
+        TEST: 
+            1. date - leave it out or create it with time module 
+            2. does this need to be done after every tenant is created?
+        """
+        def __init__(self,firstname,lastname,phone_number,email):
+            self.agreement = {
+                "firstName": firstname,
+                "lastName": lastname,
+                "phoneNumber": phone_number,
+                "email": email,
+                "dateAgreed": strftime('%Y-%m-%dT%H:%M:%S'),   
+                "agreementType": 1                      
+            }
+
+
+    class SubscriptionDetailed():
+        """
+        """
+        def __init__(self,name,tenant_id,part_number,quantity,billing_cycle,duration):
+            self.subscription = {
+                "name": name,
+                "customerTenant": {
+                    "id": tenant_id
+                },
+                "product": {
+                    "partNumber": part_number
+                },
+                "quantity": quantity,
+                "billingCycle": billing_cycle,
+                "termDuration": duration 
+            }
