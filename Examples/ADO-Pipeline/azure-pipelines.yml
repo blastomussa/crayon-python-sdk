@@ -1,0 +1,70 @@
+name: $(BuildDefinitionName)_$(Date:yyyyMMdd)$(Rev:.r)
+
+trigger:
+- none
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+- stage: 'ProvisionTenants'
+  displayName: 'Provision Tenants'
+
+  jobs:
+  - job: 'ProvisionTenants'
+    displayName: 'Provision Tenants'
+
+    steps:
+
+    - task: UsePythonVersion@0
+      displayName: "Install Requirements"
+      inputs:
+        versionSpec: '3.10'
+        addToPath: true
+        architecture: 'x64'
+
+    - script: |
+        python -m pip install --upgrade pip
+        python --version
+        pip install -r requirements.txt
+      displayName: 'Install dependencies'
+
+    - task: Bash@3
+      displayName: "Install AzCopy"
+      inputs:
+        targetType: 'inline'
+        script: |
+          sudo bash -c 'cd /usr/local/bin; curl -L https://aka.ms/downloadazcopy-v10-linux | tar --strip-components=1 --exclude=*.txt -xzvf -; chmod +x azcopy'
+    
+    - task: Bash@3
+      displayName: "Copy tenants.csv from Blob"
+      inputs:
+        targetType: 'inline'
+        failOnStderr: true
+        script: |
+          azcopy copy $BLOB_URL'/tenants.csv?'$SAS .
+      env:
+        SAS: $(SAS_TOKEN)
+
+    - script: |
+        python provision_tenants.py
+      displayName: 'Run Python script'
+      failOnStderr: true
+      env:
+        CLIENT_ID: $(CLIENT_ID)
+        CLIENT_SECRET: $(CLIENT_SECRET)
+        CLOUDIQ_USER: $(CLOUDIQ_USER)
+        CLOUDIQ_PW: $(CLOUDIQ_PW)
+
+    - task: Bash@3
+      displayName: "Copy admin_creds.csv to Blob"
+      inputs:
+        targetType: 'inline'
+        failOnStderr: true
+        script: |
+          azcopy copy ./admin_creds.csv $BLOB_URL'?'$SAS 
+      env:
+        SAS: $(SAS_TOKEN)
+      condition: always()
+
+
