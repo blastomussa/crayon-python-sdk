@@ -4,7 +4,6 @@ This project is an SDK for Crayon's CloudIQ API that can be used in Python
 scripts and applications. Provides a simple interface for individuals who are
 inexperienced in C# to test Cloud IQ API calls with Python.
 
-**Use at your own risk. Only use POST, PUT, PATCH and DELETE methods if you understand the consequenses**
 
 MIT License: https://github.com/blastomussa/crayon-python-sdk/blob/master/LICENSE 
 
@@ -12,17 +11,12 @@ MIT License: https://github.com/blastomussa/crayon-python-sdk/blob/master/LICENS
 
 1. Clone the repository using the following command:
 	```
-	git clone https://github.com/blastomussa/crayon-python-sdk.git
+	pip install crayon-cloudiq-sdk
 	```
 
-2. Navigate to the root directory of the project and run:
-	```
-	pip install -r requirements.txt
-	```
+2. Create a new python script
 
-3. Copy cloudiq.py to the root directory of a new project.
-
-4. Import the CloudIQ class from cloudiq.py:
+4. Import the CloudIQ class
 	```
 	from cloudiq import CloudIQ
 	```
@@ -64,12 +58,6 @@ MIT License: https://github.com/blastomussa/crayon-python-sdk/blob/master/LICENS
 
 ## Example Scripts
 
-In order to use the example scripts, open example-config.ini with your favorite
-text editor. Replace the dummy credentials with the those of a registered API
-user and **save the file as config.ini.**
-```
-python3 example-products.py
-```
 
 ## Methods currently implemented in CloudIQ class
 
@@ -133,7 +121,6 @@ python3 example-products.py
 58. put()
 59. createClient()
 60. deleteClient()
-
 
 
 ##  How to retrieve detailed Docstring information on CloudIQ class
