@@ -1,6 +1,9 @@
 # Test Configuration file
 /config.ini
 
+# Config
+/.pypirc
+
 # macOS
 /.DS_Store
 
