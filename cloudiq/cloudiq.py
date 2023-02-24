@@ -1982,7 +1982,7 @@ class CloudIQ():
         return status_code
 
    
-    def create_tenant(self, data):
+    def createTenant(self, data):
         """
         Create a CSP tenant through the Cloud-IQ API
         Args: 
@@ -1996,7 +1996,7 @@ class CloudIQ():
         return self.post(path, data)  
 
 
-    def create_subscription(self, data):
+    def createSubscription(self, data):
         """
         Create a subscriptions for a product(license)
         Args: 
@@ -2010,7 +2010,7 @@ class CloudIQ():
         return self.post(path, data) 
 
 
-    def create_tenantagreement(self, customerTenantId, data):
+    def createTenantAgreement(self, customerTenantId, data):
         """
         Create a Microsoft Consent Agreement for tenant
         Args: 

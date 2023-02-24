@@ -57,14 +57,14 @@ ___
 ### **Copy tenant.csv to Blob**
 
 1. Create a CSV file called **tenants.csv** with the following header fields __Do not use leading spaces__
-```
-tenant_name,domain_prefix,exo_quantity
-```
+    ```
+    tenant_name,domain_prefix,exo_quantity
+    ```
 2. Add tenant names, domain prefixes, and quantity of EXO licenses to the CSV file. Ex:
-```
-tenant_name,domain_prefix,exo_quantity
-Test Tenant,apitest120938,6
-```
+    ```
+    tenant_name,domain_prefix,exo_quantity
+    Test Tenant,apitest120938,6
+    ```
 3. Upload the CSV file to the Azure Blob container from the Setup section
 
 ### **Run the ADO Pipeline**

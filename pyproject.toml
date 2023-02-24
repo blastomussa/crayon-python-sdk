@@ -1,0 +1,21 @@
+[project]
+name = "crayon-cloudiq-sdk"
+version = "0.0.1"
+authors = [
+  { name="Joe Courtney", email="jccourtn@gmail.com" },
+]
+description = "SDK for Crayon's Cloud-IQ API"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+  'requests>=2.0'
+]
+
+[project.urls]
+"Homepage" = "https://github.com/blastomussa/crayon-python-sdk"
+"Bug Tracker" = "https://github.com/blastomussa/crayon-python-sdk/issues"

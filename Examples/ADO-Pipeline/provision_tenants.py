@@ -62,7 +62,7 @@ def main():
             )
 
             #Create New Tenant
-            new_tenant = crayon_api.create_tenant(tenant.tenant)
+            new_tenant = crayon_api.createTenant(tenant.tenant)
             print(new_tenant)
 
             # Parse Admin Credentials and write to CSV
@@ -73,7 +73,7 @@ def main():
 
             # Agree to Microsoft Customer Agreement
             tenant_id = new_tenant["Tenant"]["Id"]  
-            agree = crayon_api.create_tenantagreement(tenant_id,agreement.agreement)
+            agree = crayon_api.createTenantAgreement(tenant_id,agreement.agreement)
             print(agree)
 
             # Create Subscription objects
@@ -96,11 +96,11 @@ def main():
             )
 
             # Create Azure P2 Subsription
-            sub = crayon_api.create_subscription(azure_subscription.subscription)
+            sub = crayon_api.createSubscription(azure_subscription.subscription)
             print(sub)
 
             # Create EXO Subsription
-            sub = crayon_api.create_subscription(exo_subscription.subscription)
+            sub = crayon_api.createSubscription(exo_subscription.subscription)
             print(sub)
 
             # Sleep to stay under API rate limit

@@ -9,13 +9,14 @@ try:
     SECRET = config['CRAYON_API']['SECRET']
     USER = config['CRAYON_API']['USER']
     PASS = config['CRAYON_API']['PASS']
-    orgID = config['CRAYON_API']['orgID']
 except configparser.Error:
     print("Configuration Error...config.ini not found")
     exit()
 except KeyError:
     print("Configuration Error...configuration not found in config.ini")
     exit()
+
+orgID=123456
 
 # Initialize API instance
 crayon_api = CloudIQ(ID,SECRET,USER,PASS)
