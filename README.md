@@ -9,7 +9,7 @@ MIT License: https://github.com/blastomussa/crayon-python-sdk/blob/master/LICENS
 
 ## **Installation**
 
-1. Clone the repository using the following command:
+1. Install the Cloud-IQ module with the following command:
 	```
 	pip install crayon-cloudiq-sdk
 	```
