@@ -23,18 +23,65 @@ MIT License: https://github.com/blastomussa/crayon-python-sdk/blob/master/LICENS
 
 5. Initialize an instance of the CloudIQ class with valid user credentials:
 	```
+	from cloudiq import CloudIQ
+
 	CLIENT_ID = xxxxxxx-xxxx-xxxx-xxxx-xxxxxx
 	CLIENT_SECRET = xxxxxxx-xxxx-xxxx-xxxx-xxxxxx
-	USERNAME = example@example.com
-	PASSWORD = Password123456
+	USERNAME = "example@example.com"
+	PASSWORD = "Password123456"
 
 	crayon_api = CloudIQ(CLIENT_ID,CLIENT_SECRET,USERNAME,PASSWORD)
 	```
+	**The prefered way of importing credentials is through ENV variables.**
+	```
+	from os import getenv
+	from cloudiq import CloudIQ
+
+	CLIENT_ID = getenv('CLIENT_ID')
+	CLIENT_SECRET = getenv('CLIENT_SECRET')
+	USERNAME = getenv('CLOUDIQ_USER')
+	PASSWORD = getenv('CLOUDIQ_PW')
+
+	crayon_api = CloudIQ(CLIENT_ID,CLIENT_SECRET,USERNAME,PASSWORD)
+	```
+	ENV variables can be set using various methods including injection if using containers and pipelines or through a secrets manager such as Azure KeyVault. To set them on a local system using bash run the following commands:
+	```
+	export CLIENT_ID="xxxxxxx-xxxx-xxxx-xxxx-xxxxxx"
+	export CLIENT_SECRET="xxxxxxx-xxxx-xxxx-xxxx-xxxxxx"
+	export USERNAME="example@example.com"
+	export PASSWORD="Password123456"
+	```
+	An alternative method is to use a config.ini file containing the credentials and retrive them using the configparser module.
+	```
+	import configparser
+	from cloudiq import CloudIQ
+
+	# Parse configuration file
+	try:
+		config = configparser.ConfigParser()
+		config.read('config.ini')
+		ID = config['CRAYON_API']['ID']
+		SECRET = config['CRAYON_API']['SECRET']
+		USER = config['CRAYON_API']['USER']
+		PASS = config['CRAYON_API']['PASS']
+	except configparser.Error:
+		print("Configuration Error...config.ini not found")
+		exit()
+	except KeyError:
+		print("Configuration Error...configuration not found in config.ini")
+		exit()
+
+	crayon_api = CloudIQ(CLIENT_ID,CLIENT_SECRET,USERNAME,PASSWORD)
+	```
+	**SEE EXAMPLES FOLDER FOR AUTHENTICATION DEMONTRATIONS USING CONFIGPARSER, ENV VARIABLES, AND ADO PIPELINES**
 
 6. Make a test call to the API:
 	```
 	# retrieves all organizations associated with account
-	response = crayon_api.getOrganizations()
+	response = crayon_api.ping()
+	print(response)
+
+	response = crayon_api.me()
 	print(response)
 	```
 
@@ -49,6 +96,7 @@ MIT License: https://github.com/blastomussa/crayon-python-sdk/blob/master/LICENS
 	response = crayon_api.get("https://api.crayon.com/api/v1/AgreementProducts",params)
 	print(response)
 	```
+	Data can be sent to the API as a standard Python dictionary object 
 
 8. Retrieve a valid authorization token:
 	```
@@ -56,7 +104,18 @@ MIT License: https://github.com/blastomussa/crayon-python-sdk/blob/master/LICENS
 	print(response)
 	```
 
-## Example Scripts
+##  How to retrieve detailed Docstring information on CloudIQ class
+
+```
+from cloudiq import CloudIQ
+help(CloudIQ)
+```
+
+## Schema currently implemented in CloudIQ class
+
+1. CustomerTenantDetailed
+2. CustomerTenantAgreement
+3. SubscriptionDetailed
 
 
 ## Methods currently implemented in CloudIQ class
@@ -121,6 +180,9 @@ MIT License: https://github.com/blastomussa/crayon-python-sdk/blob/master/LICENS
 58. put()
 59. createClient()
 60. deleteClient()
+61. createTenant()
+62. createSubscription()
+63. createTenantAgreement
 
 
 ##  How to retrieve detailed Docstring information on CloudIQ class

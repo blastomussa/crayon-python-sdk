@@ -1,0 +1,56 @@
+# Product Families
+Advanced Communications
+Azure Active Directory
+Azure App Service
+Azure Arc Enabled Databases
+Azure Cosmos DB
+Azure Data Factory v2
+Azure Database for MariaDB
+Azure Database for MySQL
+Azure Database for PostgreSQL
+Azure Databricks
+Azure Information Protection
+Azure Synapse Analytics
+Cloud Scale Unit
+Common Area Phone
+Common Data Service
+Defender
+Dynamics 365
+Dynamics AX Hosted
+Dynamics GP Hosted
+Enterprise Mobility + Security
+Exchange Online
+Intune
+Microsoft 365
+Microsoft Teams
+Non-specific
+Office 365
+OneDrive
+Power Apps
+Power Automate
+Power BI
+Power Virtual Agent
+Privacy
+Project
+Redis Cache
+SharePoint
+Specialized Compute
+SQL Database
+SQL Managed Instance
+Storage
+Stream
+Universal Print
+Virtual Agent
+Virtual Machines
+Virtual Machines Licenses
+Visio
+Viva Insights
+Windows 10
+Windows 365
+Windows Remote Desktop Server CAL 2022
+Windows Rights Management Services CAL 2022
+Windows Server CAL 2022
+Workspace AppSheet
+Workspace Business
+Workspace Enterprise
+Workspace for Education
