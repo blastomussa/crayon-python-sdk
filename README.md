@@ -1,4 +1,4 @@
-# Crayon CloudIQ SDK for Python
+# **Crayon CloudIQ SDK for Python**
 
 This project is an SDK for Crayon's CloudIQ API that can be used in Python
 scripts and applications. Provides a simple interface for individuals who are
@@ -7,7 +7,7 @@ inexperienced in C# to test Cloud IQ API calls with Python.
 
 MIT License: https://github.com/blastomussa/crayon-python-sdk/blob/master/LICENSE 
 
-## Installation
+## **Installation**
 
 1. Clone the repository using the following command:
 	```
@@ -104,21 +104,21 @@ MIT License: https://github.com/blastomussa/crayon-python-sdk/blob/master/LICENS
 	print(response)
 	```
 
-##  How to retrieve detailed Docstring information on CloudIQ class
+##  **How to retrieve detailed Docstring information on CloudIQ class**
 
 ```
 from cloudiq import CloudIQ
 help(CloudIQ)
 ```
 
-## Schema currently implemented in CloudIQ class
+## **Schema currently implemented in CloudIQ class**
 
 1. CustomerTenantDetailed
 2. CustomerTenantAgreement
 3. SubscriptionDetailed
 
 
-## Methods currently implemented in CloudIQ class
+## **Methods currently implemented in CloudIQ class**
 
 1. get()
 2. ping()
@@ -184,15 +184,7 @@ help(CloudIQ)
 62. createSubscription()
 63. createTenantAgreement
 
-
-##  How to retrieve detailed Docstring information on CloudIQ class
-
-```
-from cloudiq import CloudIQ
-help(CloudIQ)
-```
-
-### References
+## **References**
 
 1. Crayon API Documentation: https://apidocs.crayon.com/
 2. Swagger UI (includes all valid schemas): https://api.crayon.com/docs/index.html
