@@ -12,10 +12,20 @@ GET, POST, PATCH, PUT, and DELETE can be called with an API endpoint and data di
 
 ## **Installation**
 
-1. Install the Cloud-IQ module with the following command:
+1. Install the crayon-cloudiq-sdk package with the following command:
 	```
 	pip install crayon-cloudiq-sdk
 	```
+
+## **Setup**
+How to Create Cloud-IQ API Client Credentials
+
+1. Login to Cloud IQ
+2. Choose Manage -> API Management from the top menu
+3. Press the + Add Client button
+4. Choose a name of the client
+5. Choose Resource Flow as the authentication type
+6. Save the Client ID and the Client Secret 
 
 ## **Usage**
 
