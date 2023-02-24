@@ -1,11 +1,14 @@
 # **Crayon CloudIQ SDK for Python**
 
 This project is an SDK for Crayon's CloudIQ API that can be used in Python
-scripts and applications. Provides a simple interface for individuals who are
-inexperienced in C# to test Cloud IQ API calls with Python.
+scripts and applications. Provides a simple interface to authenticate with 
+the API using Oauth2. It can be used to create tenants, create licensing subscriptions,
+and monitor billing. Anything that can be done in the Cloud-IQ portal can be automated 
+using this package. 
 
-
-MIT License: https://github.com/blastomussa/crayon-python-sdk/blob/master/LICENSE 
+Includes several preconfigured data schema and API methods.
+Custom blocks of data can be posted to the API as Python dictionaries. REST methods: 
+GET, POST, PATCH, PUT, and DELETE can be called with an API endpoint and data dictionary as arguments. 
 
 ## **Installation**
 
@@ -14,14 +17,16 @@ MIT License: https://github.com/blastomussa/crayon-python-sdk/blob/master/LICENS
 	pip install crayon-cloudiq-sdk
 	```
 
-2. Create a new python script
+## **Usage**
 
-4. Import the CloudIQ class
+1. Create a new python script
+
+2. Import the CloudIQ class
 	```
 	from cloudiq import CloudIQ
 	```
 
-5. Initialize an instance of the CloudIQ class with valid user credentials:
+3. Initialize an instance of the CloudIQ class with valid user credentials:
 	```
 	from cloudiq import CloudIQ
 
@@ -73,19 +78,23 @@ MIT License: https://github.com/blastomussa/crayon-python-sdk/blob/master/LICENS
 
 	crayon_api = CloudIQ(CLIENT_ID,CLIENT_SECRET,USERNAME,PASSWORD)
 	```
-	**SEE EXAMPLES FOLDER FOR AUTHENTICATION DEMONTRATIONS USING CONFIGPARSER, ENV VARIABLES, AND ADO PIPELINES**
+	**See examples folder for authentication demos using configparser, ENV variables, and Azure DevOps Pipelines** 
 
-6. Make a test call to the API:
+## **Example calls**
+
+1. Make an unauthenticated test ping to the API
 	```
-	# retrieves all organizations associated with account
 	response = crayon_api.ping()
 	print(response)
+	```
 
+2. Get information about the currently authenticated user
+	```
 	response = crayon_api.me()
 	print(response)
 	```
 
-7. Make a raw GET request:
+3. Make a raw GET request:
 	```
 	# retrieves all products in the Azure Active Directory product family within Org 123456
 	params = {
@@ -96,20 +105,87 @@ MIT License: https://github.com/blastomussa/crayon-python-sdk/blob/master/LICENS
 	response = crayon_api.get("https://api.crayon.com/api/v1/AgreementProducts",params)
 	print(response)
 	```
-	Data can be sent to the API as a standard Python dictionary object 
+	**Data can be sent to the API as a standard Python dictionary object**
 
-8. Retrieve a valid authorization token:
+4. Retrieve a valid authorization token:
 	```
 	response = crayon_api.getToken()
 	print(response)
 	```
 
-##  **How to retrieve detailed Docstring information on CloudIQ class**
+5. Create a tenant using the CustomerTenantDetailed schema:
+	```
+	# Set Unique Tenant Variables
+	tenant_name = "tenant_name"
+	domain_prefix = "domain_prefix"
+
+	# Intialize Tenant and Agreement objects
+	tenant = crayon_api.CustomerTenantDetailed(
+		tenant_name=tenant_name,
+		domain_prefix=domain_prefix,
+		org_id=111111,
+		org_name="Fake Org",
+		invoice_profile_id=80408, # Default
+		contact_firstname="First",
+		contact_lastname="Last",
+		contact_email="email@example.com",
+		contact_phone="5555555555",
+		address_firstname="First",
+		address_lastname="Last",
+		address_address="75 NoWhere Lane",
+		address_city="Boston",
+		address_countrycode="US",
+		address_region="MA",
+		address_zipcode="02109"
+	)
+
+	agreement = crayon_api.CustomerTenantAgreement(
+		firstname="First",
+		lastname="Last",
+		phone_number="5555555555",
+		email="email@example.com"
+	)
+
+	#Create New Tenant
+	new_tenant = crayon_api.createTenant(tenant.tenant)
+	print(new_tenant)
+
+	# Agree to Microsoft Customer Agreement
+	tenant_id = new_tenant["Tenant"]["Id"]  
+	agreement = crayon_api.createTenantAgreement(tenant_id,agreement.agreement)
+	print(agreement)
+	```
+
+6. Buy a Microsoft license for a tenant using the SubscriptionDetailed schema:
+	```
+	tenant_id=123456
+
+	 # Create Subscription objects
+	azure_subscription = crayon_api.SubscriptionDetailed(
+		name="Azure P2 Subscription",
+		tenant_id=tenant_id,
+		part_number="CFQ7TTC0LFK5:0001",
+		quantity=1,
+		billing_cycle=1,
+		duration="P1M"
+	)
+
+	 # Create Azure P2 Subsription
+	sub = crayon_api.createSubscription(azure_subscription.subscription)
+	print(sub)
+	```
+
+##  **Docstring**
 
 ```
 from cloudiq import CloudIQ
 help(CloudIQ)
 ```
+
+## **API Documentation**
+
+1. Crayon API Documentation: https://apidocs.crayon.com/
+2. Swagger UI (includes all valid schemas): https://api.crayon.com/docs/index.html
 
 ## **Schema currently implemented in CloudIQ class**
 
@@ -117,75 +193,71 @@ help(CloudIQ)
 2. CustomerTenantAgreement
 3. SubscriptionDetailed
 
-
 ## **Methods currently implemented in CloudIQ class**
 
-1. get()
-2. ping()
-3. me()
-4. getToken()
-5. validateToken()
-6. getOrganizations()
-7. getOrganization()
-8. getOrganizationSalesContact()
-9. getAgreementProducts()
-10. getActivityLogs()
-11. getOrganizationHasAccess()
-12. getAddresses()
-13. getAddress()
-14. getSupportedBillingCycles()
-15. getAgreements()
-16. getAgreementReports()
-17. getCustomerTenants()
-18. getCustomerTenant()
-19. getCustomerTenantDetails()
-20. getCustomerTenantAzurePlan()
-21. getCustomerTenantAgreements()
-22. getBillingCycles()
-23. getProductVariantBillingCycles()
-24. getBillingCyclesNameDictionary()
-25. getBillingStatements()
-26. getGroupedBillingStatements()
-27. getBillingStatementExcel()
-28. getBillingStatementCSV()
-29. getBillingStatementJSON()
-30. getBlogItems()
-31. getClients()
-32. getClient()
-33. getConsumers()
-34. getConsumer()
-35. getCrayonAccounts()
-36. getCrayonAccount()
-37. getGroupings()
-38. getGrouping()
-39. getInvoiceProfiles()
-40. getInvoiceProfile()
-41. getProductContainers()
-42. getProductContainer()
-43. getProductContainerRowIssues()
-44. getProductContainerShoppingCart()
-45. getPrograms()
-46. getProgram()
-47. getPublishers()
-48. getPublisher()
-49. getRegions()
-50. getRegionByCode()
-51. getUsers()
-52. getUser()
-53. getUsername()
-54. getUsageCost()
-55. delete()
-56. patch() 
-57. post()
-58. put()
-59. createClient()
-60. deleteClient()
-61. createTenant()
-62. createSubscription()
+1. get
+2. ping
+3. me
+4. getToken
+5. validateToken
+6. getOrganizations
+7. getOrganization
+8. getOrganizationSalesContact
+9. getAgreementProducts
+10. getActivityLogs
+11. getOrganizationHasAccess
+12. getAddresses
+13. getAddress
+14. getSupportedBillingCycles
+15. getAgreements
+16. getAgreementReports
+17. getCustomerTenants
+18. getCustomerTenant
+19. getCustomerTenantDetails
+20. getCustomerTenantAzurePlan
+21. getCustomerTenantAgreements
+22. getBillingCycles
+23. getProductVariantBillingCycles
+24. getBillingCyclesNameDictionary
+25. getBillingStatements
+26. getGroupedBillingStatements
+27. getBillingStatementExcel
+28. getBillingStatementCSV
+29. getBillingStatementJSON
+30. getBlogItems
+31. getClients
+32. getClient
+33. getConsumers
+34. getConsumer
+35. getCrayonAccounts
+36. getCrayonAccount
+37. getGroupings
+38. getGrouping
+39. getInvoiceProfiles
+40. getInvoiceProfile
+41. getProductContainers
+42. getProductContainer
+43. getProductContainerRowIssues
+44. getProductContainerShoppingCart
+45. getPrograms
+46. getProgram
+47. getPublishers
+48. getPublisher
+49. getRegions
+50. getRegionByCode
+51. getUsers
+52. getUser
+53. getUsername
+54. getUsageCost
+55. delete
+56. patch 
+57. post
+58. put
+59. createClient
+60. deleteClient
+61. createTenant
+62. createSubscription
 63. createTenantAgreement
 
-## **References**
 
-1. Crayon API Documentation: https://apidocs.crayon.com/
-2. Swagger UI (includes all valid schemas): https://api.crayon.com/docs/index.html
 
