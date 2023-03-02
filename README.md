@@ -113,7 +113,7 @@ response = crayon_api.me()
 
 if(int(response.status_code) == 200):
 	# Handle JSON data
-    print(response.json())
+	print(response.json())
 else:
 	# Handle Error
 	print(response.status_code)
