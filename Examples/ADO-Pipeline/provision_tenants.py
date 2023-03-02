@@ -1,4 +1,4 @@
-# Description: Automates the provisioning and licesning of Azure tenants through
+# Description: Automates the provisioning and licensing of Azure tenants through
 # Crayon's Cloud-IQ API in an Azure Pipeline. Requires a csv saved in the working directory named tenants.csv, 
 # populated with domain prefixes,tenant names, and license quantities. Outputs a csv named 
 # admin_creds.csv containing admin credentials for newly created tenants. 
@@ -34,7 +34,7 @@ def main():
             domain_prefix = row["domain_prefix"]
             exo_quantity = row["exo_quantity"]
 
-            # Intialize Tenant and Agreement objects
+            # Initialize Tenant and Agreement objects
             tenant = crayon_api.CustomerTenantDetailed(
                 tenant_name=tenant_name,
                 domain_prefix=domain_prefix,
@@ -63,7 +63,7 @@ def main():
 
             #Create New Tenant
             new_tenant = crayon_api.createTenant(tenant.tenant)
-            print(new_tenant)
+            print(new_tenant.json())
 
             # Parse Admin Credentials and write to CSV
             admin = [[tenant_name,domain_prefix,new_tenant["User"]["UserName"],new_tenant["User"]["Password"]]]
@@ -74,7 +74,7 @@ def main():
             # Agree to Microsoft Customer Agreement
             tenant_id = new_tenant["Tenant"]["Id"]  
             agree = crayon_api.createTenantAgreement(tenant_id,agreement.agreement)
-            print(agree)
+            print(agree.json())
 
             # Create Subscription objects
             azure_subscription = crayon_api.SubscriptionDetailed(
@@ -95,13 +95,13 @@ def main():
                 duration="P1Y"
             )
 
-            # Create Azure P2 Subsription
+            # Create Azure P2 Subscription
             sub = crayon_api.createSubscription(azure_subscription.subscription)
-            print(sub)
+            print(sub.json())
 
-            # Create EXO Subsription
+            # Create EXO Subscription
             sub = crayon_api.createSubscription(exo_subscription.subscription)
-            print(sub)
+            print(sub.json())
 
             # Sleep to stay under API rate limit
             sleep(1)

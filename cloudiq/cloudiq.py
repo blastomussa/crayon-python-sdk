@@ -37,7 +37,6 @@ class CloudIQ():
 
     #------------------------ Authorization and Authentication -----------------
     def getToken(self):
-        # research implicit flow implimentation
         """
         Posts client credentials and secrets to https://api.crayon.com/api/v1/connect/token/
         which returns an access token if credentials are valid. Uses ResourcePasswordFlow.
@@ -102,7 +101,7 @@ class CloudIQ():
         request to a specified endpoint.
 
         Args:
-            path (string): API endoint; DOES NOT include 'https://api.crayon.com/api/v1/'
+            path (string): API endpoint; DOES NOT include 'https://api.crayon.com/api/v1/'
             params (dictionary): filters and parameters for GET requests
 
         Returns:
@@ -115,15 +114,7 @@ class CloudIQ():
             }
         try:
             response = requests.get(url=path, headers=header, params=params)
-            if(int(response.status_code) == 200):
-                return response.json()
-            else:
-                print(f"{response.status_code} Error")
-                try:
-                    print(response.json())
-                except requests.exceptions.JSONDecodeError:
-                    print(response)
-                exit(1)
+            return response
 
         except requests.exceptions.ConnectionError:
             print("Connection Error. Please check your connection to the internet.")
@@ -136,7 +127,7 @@ class CloudIQ():
         request to a specified endpoint.
   
         Args:
-            path (string): API endoint; DOES NOT include 'https://api.crayon.com/api/v1/'
+            path (string): API endpoint; DOES NOT include 'https://api.crayon.com/api/v1/'
             data (dictionary): resource schema in json(dict) form
 
          Returns:
@@ -148,18 +139,7 @@ class CloudIQ():
             }
         try:
             response = requests.post(url=path, headers=header, json=data)
-            if(int(response.status_code) == 200):
-                return response.json()
-            elif(int(response.status_code) == 500):
-                print(f"{response.status_code} Error. Check your schema definition.")
-                print(response.json())
-            else:
-                print(f"{response.status_code} Error")
-                try:
-                    print(response.json())
-                except requests.exceptions.JSONDecodeError:
-                    print(response)
-                exit(1)
+            return response
 
         except requests.exceptions.ConnectionError:
             print("Connection Error. Please check your connection to the internet.")
@@ -173,7 +153,7 @@ class CloudIQ():
         request to a specified endpoint.
 
         Args:
-            path (string): API endoint; DOES NOT include 'https://api.crayon.com/api/v1/'
+            path (string): API endpoint; DOES NOT include 'https://api.crayon.com/api/v1/'
             data (dictionary): resource schema in json(dict) form
         
          Returns:
@@ -186,15 +166,7 @@ class CloudIQ():
             }
         try:
             response = requests.post(url=path, headers=header, json=data)
-            if(int(response.status_code) == 200):
-                return response.json()
-            else:
-                print(f"{response.status_code} Error")
-                try:
-                    print(response.json())
-                except requests.exceptions.JSONDecodeError:
-                    print(response)
-                exit(1)
+            return response
 
         except requests.exceptions.ConnectionError:
             print("Connection Error. Please check your connection to the internet.")
@@ -210,7 +182,7 @@ class CloudIQ():
         Azure Subscription and updating product container row
 
         Args:
-            path (string): API endoint; DOES NOT include 'https://api.crayon.com/api/v1/'
+            path (string): API endpoint; DOES NOT include 'https://api.crayon.com/api/v1/'
             data (dictionary): resource schema in json(dict) form
 
          Returns:
@@ -223,15 +195,7 @@ class CloudIQ():
             }
         try:
             response = requests.patch(url=path, headers=header, json=data)
-            if(int(response.status_code) == 200):
-                return response.json()
-            else:
-                print(f"{response.status_code} Error")
-                try:
-                    print(response.json())
-                except requests.exceptions.JSONDecodeError:
-                    print(response)
-                exit(1)
+            return response
 
         except requests.exceptions.ConnectionError:
             print("Connection Error. Please check your connection to the internet.")
@@ -245,7 +209,7 @@ class CloudIQ():
         request to a specified endpoint.
 
         Args:
-            path (string): API endoint; DOES NOT include 'https://api.crayon.com/api/v1/'
+            path (string): API endpoint; DOES NOT include 'https://api.crayon.com/api/v1/'
             params (dictionary): optional parameters used for some calls
 
         Returns:
@@ -257,7 +221,7 @@ class CloudIQ():
             }
         try:
             response = requests.delete(url=path, headers=header, params=params)
-            return response.status_code
+            return response
 
         except requests.exceptions.ConnectionError:
             print("Connection Error. Please check your connection to the internet.")
@@ -276,13 +240,7 @@ class CloudIQ():
             url = f"{self.baseURL}/ping"
             header = {'accept': '*/*'}
             response = requests.get(url, headers=header)
-            if(int(response.status_code) == 200):
-                return response.json()
-            else:
-                print(f"{response.status_code} Error")
-                print(response.json())
-                exit(1)
-
+            return response
         except requests.exceptions.ConnectionError:
             print("Connection Error. Please check your connection to the internet.")
             exit(1)
@@ -1170,7 +1128,7 @@ class CloudIQ():
  
     def deleteGroupings (self, groupingID):
         """
-        Delete a Groouping
+        Delete a Grouping
 
         Args:
             groupingID: Required 
@@ -1817,7 +1775,7 @@ class CloudIQ():
 
         Args:
             orgID (integer): REQUIRED
-            filter (disctionary): time range
+            filter (dictionary): time range
 
         Returns:
             json (dictionary): OrganizationUsageCost Resource

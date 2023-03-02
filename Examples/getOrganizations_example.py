@@ -22,4 +22,4 @@ orgID=123456
 crayon_api = CloudIQ(ID,SECRET,USER,PASS)
 
 response = crayon_api.getOrganizations()
-print(response)
+print(response.json())

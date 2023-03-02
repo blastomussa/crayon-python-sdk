@@ -33,8 +33,8 @@ ___
 2. Create a new pipeline
 3. Choose Azure Repo git
 4. Choose the repository
-5. Choose Existing Azure Pipline YAML file
-6. Specify the azure_pipelines.yml file in the root directory of the respository. 
+5. Choose Existing Azure Pipeline YAML file
+6. Specify the azure_pipelines.yml file in the root directory of the repository. 
 7. Save credentials to the ADO Pipeline Variables
     1. In the top right corner click the Variables button.
     2. Add the following variables. Save the values marked as **SECRET** as secret variables.
@@ -77,4 +77,4 @@ ___
 
 1. Navigate to the Azure blob container.
 2. Download the admin_creds.csv file.
-3. All temporary admin credentials from preceeding pipeline run will be in this file 
+3. All temporary admin credentials from proceeding pipeline run will be in this file 
