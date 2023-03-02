@@ -96,7 +96,7 @@ Data that is returned by the API is saved into a response object (except for get
 
 * To return the json data from the response use response.json() class method
 
-* To return the status code use the response.statuscode variable
+* To return the status code use the response.status_code variable
 
 * All successful API calls either return **200 OK**, **201 Created**, or **204 No Content**
 
